@@ -7,6 +7,9 @@ import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -15,6 +18,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+
 
 /**
  * The Drive subsystem handles swerve drive control, odometry, and gyro feedback. It instantiates
@@ -25,10 +30,10 @@ public class Drive extends SubsystemBase {
     private static Drive instance = null;
 
     // Swerve modules (with unique module IDs for telemetry)
-    private final SwerveModule frontLeftModule;
-    private final SwerveModule frontRightModule;
-    private final SwerveModule backLeftModule;
-    private final SwerveModule backRightModule;
+    private SwerveModule frontLeftModule = null;
+    private SwerveModule frontRightModule = null;
+    private SwerveModule backLeftModule = null;
+    private SwerveModule backRightModule = null;
 
     // Gyro sensor
     private final AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
@@ -85,6 +90,18 @@ public class Drive extends SubsystemBase {
                         frontRightModule.getPosition(), backLeftModule.getPosition(),
                         backRightModule.getPosition()});
     }
+
+                private final SwerveDrivePoseEstimator PoseEstimator =
+      new SwerveDrivePoseEstimator(
+          kinematics,
+          gyro.getRotation2d(),
+                          new SwerveModulePosition[] {frontLeftModule.getPosition(),
+                        frontRightModule.getPosition(), backLeftModule.getPosition(),
+                        backRightModule.getPosition()},
+          
+          new Pose2d(),
+          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
+          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
     /**
      * Returns the singleton instance of the Drive subsystem.
@@ -241,4 +258,30 @@ public class Drive extends SubsystemBase {
     public SwerveDriveKinematics getKinematics() {
         return kinematics;
     }
+     boolean useMegaTag2 = true; //set to false to use MegaTag1
+    boolean doRejectUpdate = false; {
+    if(useMegaTag2 == false)
+    {
+      System.out.println("useMegaTag2 is set to false!");
+    }
+    else if (useMegaTag2 == true) {
+      LimelightHelpers.SetRobotOrientation("limelight", PoseEstimator.getEstimatedPosition().getRotation().getDegrees(), 0, 0, 0, 0, 0);
+      LimelightHelpers.PoseEstimate mt2 = LimelightHelpers.getBotPoseEstimate_wpiBlue_MegaTag2("limelight");
+      if(Math.abs(gyro.getRate()) > 720) // if our angular velocity is greater than 720 degrees per second, ignore vision updates
+      {
+        doRejectUpdate = true;
+      }
+      if(mt2.tagCount == 0)
+      {
+        doRejectUpdate = true;
+      }
+      if(!doRejectUpdate)
+      {
+        PoseEstimator.setVisionMeasurementStdDevs(VecBuilder.fill(.7,.7,9999999));
+        PoseEstimator.addVisionMeasurement(
+            mt2.pose,
+            mt2.timestampSeconds);
+      }
+    }
+  }
 }

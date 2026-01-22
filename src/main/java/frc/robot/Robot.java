@@ -77,6 +77,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
 
+    LimelightHelpers.setCropWindow("limelight", -.5, .7, -1, .9);
+    
     // Red field relative (with robot facing )
     double forward = -Math.signum(controller.getLeftY())
         * Math.pow(Math.abs(controller.getLeftY()), 2) / speedMode;
