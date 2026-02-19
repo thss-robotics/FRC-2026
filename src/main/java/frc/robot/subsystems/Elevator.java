@@ -29,7 +29,6 @@ public class Elevator extends SubsystemBase {
 
   // Motors and encoder
   public SparkMax Motor1;
-  private DutyCycleEncoder elevatorEncoder;
   public SparkMax Motor2;
   private SparkClosedLoopController elevatorPIDController;
 
@@ -41,8 +40,6 @@ public class Elevator extends SubsystemBase {
 
   public int direction = Constants.Up;
   public int speed = Constants.DownSpeed;
-  private double rotation = 0;
-  private double totalRotation = 0;
   public SparkMaxConfig elevatorConfig;
 
   public static Elevator getInstance() {
@@ -70,11 +67,7 @@ public class Elevator extends SubsystemBase {
 
     // RIGHT ELEVATOR MOTOR (follows Motor1)
     Motor2 = new SparkMax(Constants.kElevatorMotor2ID, MotorType.kBrushed);
-    Motor2.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-
-    // Create the encoder
-    elevatorEncoder = new DutyCycleEncoder(0);
+    Motor2.configure(elevatorConfig.follow(Motor1), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     profile = new TrapezoidProfile(
         new TrapezoidProfile.Constraints(Constants.kMaxVelocity, Constants.kMaxAcceleration));
@@ -107,10 +100,8 @@ public class Elevator extends SubsystemBase {
           Constants.kG,
           ArbFFUnits.kVoltage);
     } else {
-      curState.position = totalRotation;
       curState.velocity = 0;
       Motor1.set(mPeriodicIO.elevatorPower + Constants.voltageOffset);
-      Motor2.set(-mPeriodicIO.elevatorPower + -Constants.voltageOffset);
     }
   }
 
@@ -131,15 +122,6 @@ public class Elevator extends SubsystemBase {
       mPeriodicIO.isElevatorPosControl = false;
       mPeriodicIO.elevatorPower = manualInput;
     }
-
-    if (direction == Constants.Up && elevatorEncoder.get() == 0.00) {
-      rotation++;
-    }
-    if (direction == Constants.Down && elevatorEncoder.get() == 1.00) {
-      rotation--;
-    }
-    totalRotation = rotation + elevatorEncoder.get();
-
   }
 
   /**
