@@ -70,7 +70,7 @@ public class Elevator extends SubsystemBase {
 
     // RIGHT ELEVATOR MOTOR (follows Motor1)
     Motor2 = new SparkMax(Constants.kElevatorMotor2ID, MotorType.kBrushed);
-    Motor2.configure(elevatorConfig.follow(Motor1), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    Motor2.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
 
     // Create the encoder
@@ -110,6 +110,7 @@ public class Elevator extends SubsystemBase {
       curState.position = totalRotation;
       curState.velocity = 0;
       Motor1.set(mPeriodicIO.elevatorPower + Constants.voltageOffset);
+      Motor2.set(-mPeriodicIO.elevatorPower + -Constants.voltageOffset);
     }
   }
 
