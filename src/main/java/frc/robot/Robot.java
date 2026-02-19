@@ -2,6 +2,9 @@ package frc.robot;
 
 import frc.lib.util.AdvantageKit;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -32,7 +35,9 @@ public class Robot extends LoggedRobot {
   // Controller and subsystems
   private final XboxController controller = new XboxController(Constants.kXboxControllerPort);
   private Drive driveSubsystem;
-
+  private Elevator elevatorSubsystem;
+  private Intake intakeSubsystem;
+  
   // Singleton instance of Robot
   private static Robot instance = null;
 
@@ -50,6 +55,8 @@ public class Robot extends LoggedRobot {
 
     // Instantiate subsystems
     driveSubsystem = Drive.getInstance();
+    elevatorSubsystem = Elevator.getInstance();
+    intakeSubsystem = Intake.getInstance();
   }
 
   @Override
@@ -92,6 +99,28 @@ public class Robot extends LoggedRobot {
       driveSubsystem.drive(xSpeed, ySpeed, rotation, true);
     } else {
       driveSubsystem.drive(0, 0, 0, true);
+    }
+
+     if (controller.getRightY() <= 0) {
+      elevatorSubsystem.direction = Constants.Up;
+      elevatorSubsystem.manualControl(controller.getRightY() / 2.5);
+    }
+    else { 
+      elevatorSubsystem.direction = Constants.Down;
+      elevatorSubsystem.manualControl(controller.getRightY() / 9);
+    }
+
+    elevatorSubsystem.periodic();
+
+    boolean runIntakeBack = controller.getLeftBumper();
+    boolean runIntake = controller.getRightBumper();
+    IntakeState currentIntakeState = intakeSubsystem.getIntakeState();
+    if (runIntake) {
+      intakeSubsystem.setIntakeState(IntakeState.INTAKING);
+    } else if (runIntakeBack) {
+      intakeSubsystem.setIntakeState(IntakeState.EJECTING);
+    } else if (currentIntakeState == IntakeState.INTAKING || currentIntakeState == IntakeState.EJECTING) {
+      intakeSubsystem.setIntakeState(IntakeState.OFF);
     }
   }
 

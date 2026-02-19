@@ -71,4 +71,35 @@ public class Constants {
                 new TrapezoidProfile.Constraints(kMaxAngularSpeedRadiansPerSecond,
                         kMaxAngularSpeedRadiansPerSecondSquared);
     }
+        ///////////// Elevator (Values WIP) /////////////
+    
+    public static final int Up = -1;
+    public static final int Down = 1;
+    public static final int Stop = 0;
+
+    public static final double voltageOffset = -0.13;
+
+    public static final int UpSpeed = 3;
+    public static final int DownSpeed = 6;
+
+    public static final int kElevatorMotor1ID = 15; //change this!
+    public static final int kElevatorMotor2ID = 16; //change this!
+    
+    public static final double kP = 0.01;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+    public static final double kIZone = 5.0;
+    public static final double kG = 0.5;
+
+    public static final double kMaxVelocity = 65;
+    public static final double kMaxAcceleration = 200;
+
+    public static final int kMaxCurrent = 40;
+    
+       ///////////// Intake /////////////
+    public static final int kIntakeMotorLeftID = 9;
+    public static final int kIntakeMotorRightID = 8;
+    public static final double INTAKE_SPEED = -0.5;
+    public static final double EJECT_SPEED = 0.5;
+    
 }
