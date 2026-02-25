@@ -19,14 +19,14 @@ public final class MotorConfigs {
 
                         double turningFactor = 2 * Math.PI;
                         // ===== Aggressive PID Tuning for Faster Response ===== //
-                        double kP_drive = 0.1; // Increased from 0.1 to 0.2 (More aggressive
+                        double KpDrive = 0.1; // Increased from 0.1 to 0.2 (More aggressive
                                                // correction)
-                        double kI_drive = 0; // 0.0005; // Reduced I to prevent integral windup
-                        double kD_drive = 0; // 0.01; // Increased D to reduce overshoot
+                        double KiDrive = 0; // 0.0005; // Reduced I to prevent integral windup
+                        double KdDrive = 0; // 0.01; // Increased D to reduce overshoot
 
-                        double kP_turn = 0.6; // Increased P for sharper, faster turns
-                        double kI_turn = 0.000; // Keep I small to prevent drift
-                        double kD_turn = 0; // 0.02; // Increased D to reduce oscillations
+                        double KpTurn = 0.6; // Increased P for sharper, faster turns
+                        double KiTurn = 0.000; // Keep I small to prevent drift
+                        double KdTurn = 0; // 0.02; // Increased D to reduce oscillations
 
                         // ---- DRIVE CONFIG (Fast Mode) ---- //
                         drivingConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30);
@@ -35,7 +35,7 @@ public final class MotorConfigs {
                                                                                          // per
                                                                                          // second
                         drivingConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                                        .pid(kP_drive, kI_drive, kD_drive).outputRange(-1, 1);
+                                        .pid(KpDrive, KiDrive, KdDrive).outputRange(-1, 1);
 
                         // ---- TURNING CONFIG (Aggressive for Fast Turns) ---- //
                         turningConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20);
@@ -45,7 +45,7 @@ public final class MotorConfigs {
                                                                                          // per
                                                                                          // second
                         turningConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                        .pid(kP_turn, kI_turn, kD_turn).outputRange(-1, 1)
+                                        .pid(KpTurn, KiTurn, KdTurn).outputRange(-1, 1)
                                         .positionWrappingEnabled(true)
                                         .positionWrappingInputRange(0, turningFactor);
                 }

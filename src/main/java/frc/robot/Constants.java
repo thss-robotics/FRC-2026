@@ -54,6 +54,8 @@ public class Constants {
 
     ///////////// Robot Controls /////////////
     public static final int kXboxControllerPort = 0;
+    public static final double ElevatorUpwardsReducer = 2.5;
+    public static final double ElevatorDownwardsReducer = 9.0;
 
     ///////////// Autonomous Constants /////////////
     public static final class AutoConstants {
@@ -85,11 +87,11 @@ public class Constants {
     public static final int kElevatorMotor1ID = 15; //change this!
     public static final int kElevatorMotor2ID = 16; //change this!
     
-    public static final double kP = 0.01;
-    public static final double kI = 0.0;
-    public static final double kD = 0.0;
-    public static final double kIZone = 5.0;
-    public static final double kG = 0.5;
+    public static final double KpElevator = 0.01;
+    public static final double KiElevator = 0.0;
+    public static final double KdElevator = 0.0;
+    public static final double KiElevatorZone = 5.0;
+    public static final double KgElevator = 0.5;
 
     public static final double kMaxVelocity = 65;
     public static final double kMaxAcceleration = 200;
@@ -99,7 +101,7 @@ public class Constants {
        ///////////// Intake /////////////
     public static final int kIntakeMotorLeftID = 9;
     public static final int kIntakeMotorRightID = 8;
-    public static final double INTAKE_SPEED = -0.5;
-    public static final double EJECT_SPEED = 0.5;
+    public static final double IntakeSpeed = -0.5;
+    public static final double EjectSpeed = 0.5;
     
 }

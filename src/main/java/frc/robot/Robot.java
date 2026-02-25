@@ -103,11 +103,11 @@ public class Robot extends LoggedRobot {
 
      if (controller.getRightY() <= 0) {
       elevatorSubsystem.direction = Constants.Up;
-      elevatorSubsystem.manualControl(controller.getRightY() / 2.5);
+      elevatorSubsystem.manualControl(controller.getRightY() / Constants.ElevatorUpwardsReducer);
     }
     else { 
       elevatorSubsystem.direction = Constants.Down;
-      elevatorSubsystem.manualControl(controller.getRightY() / 9);
+      elevatorSubsystem.manualControl(controller.getRightY() / Constants.ElevatorDownwardsReducer);
     }
 
     elevatorSubsystem.periodic();

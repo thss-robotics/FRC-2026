@@ -54,8 +54,8 @@ public class Elevator extends SubsystemBase {
 
     SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     elevatorConfig.closedLoop
-        .pid(Constants.kP, Constants.kI, Constants.kD)
-        .iZone(Constants.kIZone);
+        .pid(Constants.KpElevator, Constants.KiElevator, Constants.KdElevator)
+        .iZone(Constants.KiElevatorZone);
     elevatorConfig.smartCurrentLimit(Constants.kMaxCurrent);
     elevatorConfig.idleMode(IdleMode.kBrake);
     elevatorConfig.limitSwitch.reverseLimitSwitchEnabled(true);
@@ -97,7 +97,7 @@ public class Elevator extends SubsystemBase {
           curState.position,
           SparkBase.ControlType.kPosition,
           ClosedLoopSlot.kSlot0,
-          Constants.kG,
+          Constants.KgElevator,
           ArbFFUnits.kVoltage);
     } else {
       curState.velocity = 0;
