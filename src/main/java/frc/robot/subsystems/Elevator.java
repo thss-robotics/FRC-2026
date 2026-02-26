@@ -38,8 +38,8 @@ public class Elevator extends SubsystemBase {
   private TrapezoidProfile.State goalState = new TrapezoidProfile.State();
   private double prevUpdateTime = Timer.getFPGATimestamp();
 
-  public int direction = Constants.Up;
-  public int speed = Constants.DownSpeed;
+  public int direction = Constants.UP_AMOUNT;
+  public int speed = Constants.DOWN_SPEED;
   public SparkMaxConfig elevatorConfig;
 
   public static Elevator getInstance() {
@@ -54,23 +54,23 @@ public class Elevator extends SubsystemBase {
 
     SparkMaxConfig elevatorConfig = new SparkMaxConfig();
     elevatorConfig.closedLoop
-        .pid(Constants.kP, Constants.kI, Constants.kD)
-        .iZone(Constants.kIZone);
-    elevatorConfig.smartCurrentLimit(Constants.kMaxCurrent);
+        .pid(Constants.ELEVATOR_KP, Constants.ELEVATOR_KI, Constants.ELEVATOR_KD)
+        .iZone(Constants.ELEVATOR_KI_ZONE);
+    elevatorConfig.smartCurrentLimit(Constants.ELEVATOR_MAX_CURRENT);
     elevatorConfig.idleMode(IdleMode.kBrake);
     elevatorConfig.limitSwitch.reverseLimitSwitchEnabled(true);
 
     // LEFT ELEVATOR MOTOR
-    Motor1 = new SparkMax(Constants.kElevatorMotor1ID, MotorType.kBrushed);
+    Motor1 = new SparkMax(Constants.ELEVATOR_MOTOR_1_ID, MotorType.kBrushed);
     elevatorPIDController = Motor1.getClosedLoopController();
     Motor1.configure(elevatorConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     // RIGHT ELEVATOR MOTOR (follows Motor1)
-    Motor2 = new SparkMax(Constants.kElevatorMotor2ID, MotorType.kBrushed);
+    Motor2 = new SparkMax(Constants.ELEVATOR_MOTOR_2_ID, MotorType.kBrushed);
     Motor2.configure(elevatorConfig.follow(Motor1), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     profile = new TrapezoidProfile(
-        new TrapezoidProfile.Constraints(Constants.kMaxVelocity, Constants.kMaxAcceleration));
+        new TrapezoidProfile.Constraints(Constants.ELEVATOR_MAX_VELOCITY, Constants.ELEVATOR_MAX_ACCELERATION));
   }
 
   private static class PeriodicIO {
@@ -97,11 +97,11 @@ public class Elevator extends SubsystemBase {
           curState.position,
           SparkBase.ControlType.kPosition,
           ClosedLoopSlot.kSlot0,
-          Constants.kG,
+          Constants.ELEVATOR_KG,
           ArbFFUnits.kVoltage);
     } else {
       curState.velocity = 0;
-      Motor1.set(mPeriodicIO.elevatorPower + Constants.voltageOffset);
+      Motor1.set(mPeriodicIO.elevatorPower + Constants.VOLTAGE_OFFSET);
     }
   }
 

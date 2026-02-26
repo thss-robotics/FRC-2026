@@ -14,40 +14,40 @@ public final class MotorConfigs {
                 static {
                         // Use module constants to calculate conversion factors and feed forward
                         // gain.
-                        double drivingFactor = (2 * Constants.kWheelRadius * Math.PI)
-                                        / Constants.kDrivingMotorReduction;
+                        double DRIVING_FACTOR = (2 * Constants.WHEEL_RADIUS * Math.PI)
+                                        / Constants.DRIVING_MOTOR_REDUCTION;
 
-                        double turningFactor = 2 * Math.PI;
+                        double TURNING_FACTOR = 2 * Math.PI;
                         // ===== Aggressive PID Tuning for Faster Response ===== //
-                        double kP_drive = 0.1; // Increased from 0.1 to 0.2 (More aggressive
+                        double DRIVE_KP = 0.1; // Increased from 0.1 to 0.2 (More aggressive
                                                // correction)
-                        double kI_drive = 0; // 0.0005; // Reduced I to prevent integral windup
-                        double kD_drive = 0; // 0.01; // Increased D to reduce overshoot
+                        double DRIVE_KI = 0; // 0.0005; // Reduced I to prevent integral windup
+                        double DRIVE_KD = 0; // 0.01; // Increased D to reduce overshoot
 
-                        double kP_turn = 0.6; // Increased P for sharper, faster turns
-                        double kI_turn = 0.000; // Keep I small to prevent drift
-                        double kD_turn = 0; // 0.02; // Increased D to reduce oscillations
+                        double TURN_KP = 0.6; // Increased P for sharper, faster turns
+                        double TURN_KI = 0.000; // Keep I small to prevent drift
+                        double TURN_KD = 0; // 0.02; // Increased D to reduce oscillations
 
                         // ---- DRIVE CONFIG (Fast Mode) ---- //
                         drivingConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30);
-                        drivingConfig.encoder.positionConversionFactor(drivingFactor) // meters
-                                        .velocityConversionFactor(drivingFactor / 60.0); // meters
+                        drivingConfig.encoder.positionConversionFactor(DRIVING_FACTOR) // meters
+                                        .velocityConversionFactor(DRIVING_FACTOR / 60.0); // meters
                                                                                          // per
                                                                                          // second
                         drivingConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                                        .pid(kP_drive, kI_drive, kD_drive).outputRange(-1, 1);
+                                        .pid(DRIVE_KP, DRIVE_KI, DRIVE_KD).outputRange(-1, 1);
 
                         // ---- TURNING CONFIG (Aggressive for Fast Turns) ---- //
                         turningConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20);
                         turningConfig.absoluteEncoder.inverted(true)
-                                        .positionConversionFactor(turningFactor) // radians
-                                        .velocityConversionFactor(turningFactor / 60.0); // radians
+                                        .positionConversionFactor(TURNING_FACTOR) // radians
+                                        .velocityConversionFactor(TURNING_FACTOR / 60.0); // radians
                                                                                          // per
                                                                                          // second
                         turningConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
-                                        .pid(kP_turn, kI_turn, kD_turn).outputRange(-1, 1)
+                                        .pid(TURN_KP, TURN_KI, TURN_KD).outputRange(-1, 1)
                                         .positionWrappingEnabled(true)
-                                        .positionWrappingInputRange(0, turningFactor);
+                                        .positionWrappingInputRange(0, TURNING_FACTOR);
                 }
         }
 }

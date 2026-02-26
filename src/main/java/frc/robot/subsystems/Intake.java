@@ -42,11 +42,11 @@ public class Intake extends SubsystemBase {
             SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
         // Attach motors
-        intakeMotorLeft = new SparkMax(Constants.kIntakeMotorLeftID, MotorType.kBrushed);
+        intakeMotorLeft = new SparkMax(Constants.INTAKE_MOTOR_LEFT_ID, MotorType.kBrushed);
         intakeMotorLeft.configure(
         intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
-        intakeMotorRight = new SparkMax(Constants.kIntakeMotorRightID, MotorType.kBrushed);
+        intakeMotorRight = new SparkMax(Constants.INTAKE_MOTOR_RIGHT_ID, MotorType.kBrushed);
         intakeMotorRight.configure(
         intakeConfig.follow(intakeMotorLeft), ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
