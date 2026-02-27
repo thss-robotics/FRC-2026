@@ -10,7 +10,7 @@ public class Constants {
 
     // Calculations for driving motor conversion factors and feed forward
     public static final double DRIVING_MOTOR_FREE_SPEED_RPS = 5676 / 60.0;
-    public static final double WHEEL_DIAMETER_METERS = 0.0762;
+    public static final double WHEEL_DIAMETER_METERS = 0.1016; //originally 0.0762
     public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
     // Motor configuration reductions: 45 teeth on the wheel's bevel gear, 22 on the first-stage

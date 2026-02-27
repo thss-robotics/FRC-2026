@@ -29,7 +29,7 @@ public final class MotorConfigs {
                         double TURN_KD = 0; // 0.02; // Increased D to reduce oscillations
 
                         // ---- DRIVE CONFIG (Fast Mode) ---- //
-                        drivingConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(30);
+                        drivingConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(39);
                         drivingConfig.encoder.positionConversionFactor(DRIVING_FACTOR) // meters
                                         .velocityConversionFactor(DRIVING_FACTOR / 60.0); // meters
                                                                                          // per
@@ -38,7 +38,7 @@ public final class MotorConfigs {
                                         .pid(DRIVE_KP, DRIVE_KI, DRIVE_KD).outputRange(-1, 1);
 
                         // ---- TURNING CONFIG (Aggressive for Fast Turns) ---- //
-                        turningConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(20);
+                        turningConfig.idleMode(IdleMode.kBrake).smartCurrentLimit(39);
                         turningConfig.absoluteEncoder.inverted(true)
                                         .positionConversionFactor(TURNING_FACTOR) // radians
                                         .velocityConversionFactor(TURNING_FACTOR / 60.0); // radians

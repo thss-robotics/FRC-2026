@@ -170,7 +170,7 @@ public class Drive extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot);
 
         SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-
+        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.DRIVE_MAX_SPEED);
         // Apply module states
         frontLeftModule.setDesiredState(swerveModuleStates[1]);
         frontRightModule.setDesiredState(swerveModuleStates[0]);
