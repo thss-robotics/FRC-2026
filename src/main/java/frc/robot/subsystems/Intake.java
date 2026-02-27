@@ -67,12 +67,12 @@ public class Intake extends SubsystemBase {
     private void updateMotor() {
         switch (currentState) {
             case INTAKING:
-                intakeMotorLeft.set(Constants.IntakeSpeed);
-                intakeMotorRight.set(Constants.IntakeSpeed);
+                intakeMotorLeft.set(Constants.INTAKE_SPEED);
+                intakeMotorRight.set(Constants.INTAKE_SPEED);
                 break;
             case EJECTING:
-                intakeMotorLeft.set(Constants.EjectSpeed);
-                intakeMotorRight.set(Constants.EjectSpeed);
+                intakeMotorLeft.set(Constants.EJECT_SPEED);
+                intakeMotorRight.set(Constants.EJECT_SPEED);
                 break;
             case OFF:
             default:
