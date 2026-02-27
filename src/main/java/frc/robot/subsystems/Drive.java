@@ -35,13 +35,13 @@ public class Drive extends SubsystemBase {
 
     // Locations of swerve modules relative to the robot's center (in meters)
     private final Translation2d frontLeftLocation = new Translation2d(
-            Constants.kPositiveModuleFromRobotCentre, Constants.kPositiveModuleFromRobotCentre);
+            Constants.POSITIVE_MODULE_FROM_ROBOT_CENTRE, Constants.POSITIVE_MODULE_FROM_ROBOT_CENTRE);
     private final Translation2d frontRightLocation = new Translation2d(
-            Constants.kPositiveModuleFromRobotCentre, Constants.kNegativeModuleFromRobotCentre);
+            Constants.POSITIVE_MODULE_FROM_ROBOT_CENTRE, Constants.NEGATIVE_MODULE_FROM_ROBOT_CENTRE);
     private final Translation2d backLeftLocation = new Translation2d(
-            Constants.kNegativeModuleFromRobotCentre, Constants.kPositiveModuleFromRobotCentre);
+            Constants.NEGATIVE_MODULE_FROM_ROBOT_CENTRE, Constants.POSITIVE_MODULE_FROM_ROBOT_CENTRE);
     private final Translation2d backRightLocation = new Translation2d(
-            Constants.kNegativeModuleFromRobotCentre, Constants.kNegativeModuleFromRobotCentre);
+            Constants.NEGATIVE_MODULE_FROM_ROBOT_CENTRE, Constants.NEGATIVE_MODULE_FROM_ROBOT_CENTRE);
 
     // Kinematics and odometry objects for swerve drive
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
@@ -59,25 +59,25 @@ public class Drive extends SubsystemBase {
         // Instantiate each swerve module.
         // Ensure that your Constants include unique module IDs along with drive and turning channel
         // IDs and chassis offsets.
-        frontLeftModule = new SwerveModule(Constants.kFrontLeftModuleId,
-                Constants.kFrontLeftMotordriveMotorChannelID,
-                Constants.kFrontLeftMotorturningMotorChannelID,
-                Constants.kFrontLeftMotorChassisAngularOffset);
+        frontLeftModule = new SwerveModule(Constants.FRONT_LEFT_MODULE_ID,
+                Constants.FRONT_LEFT_MOTOR_DRIVE_MOTOR_CHANNEL_ID,
+                Constants.FRONT_LEFT_MOTOR_TURNING_MOTOR_CHANNEL_ID,
+                Constants.FRONT_LEFT_MOTOR_CHASSIS_ANGULAR_OFFSET);
 
-        frontRightModule = new SwerveModule(Constants.kFrontRightModuleId,
-                Constants.kFrontRightMotordriveMotorChannelID,
-                Constants.kFrontRightMotorturningMotorChannelID,
-                Constants.kFrontRightMotorChassisAngularOffset);
+        frontRightModule = new SwerveModule(Constants.FRONT_RIGHT_MODULE_ID,
+                Constants.FRONT_RIGHT_MOTOR_DRIVE_MOTOR_CHANNEL_ID,
+                Constants.FRONT_RIGHT_MOTOR_TURNING_MOTOR_CHANNEL_ID,
+                Constants.FRONT_RIGHT_MOTOR_CHASSIS_ANGULAR_OFFSET);
 
-        backLeftModule = new SwerveModule(Constants.kBackLeftModuleId,
-                Constants.kBackLeftMotordriveMotorChannelID,
-                Constants.kBackLeftMotorturningMotorChannelID,
-                Constants.kBackLeftMotorChassisAngularOffset);
+        backLeftModule = new SwerveModule(Constants.BACK_LEFT_MODULE_ID,
+                Constants.BACK_LEFT_MOTOR_DRIVE_MOTOR_CHANNEL_ID,
+                Constants.BACK_LEFT_MOTOR_TURN_MOTOR_CHANNEL_ID,
+                Constants.BACK_LEFT_MOTOR_CHASSIS_ANGULAR_OFFSET);
 
-        backRightModule = new SwerveModule(Constants.kBackRightModuleId,
-                Constants.kBackRightMotordriveMotorChannelID,
-                Constants.kBackRightMotorturningMotorChannelID,
-                Constants.kBackRightMotorChassisAngularOffset);
+        backRightModule = new SwerveModule(Constants.BACK_RIGHT_MODULE_ID,
+                Constants.BACK_RIGHT_MOTOR_DRIVE_MOTOR_CHANNEL_ID,
+                Constants.BACK_RIGHT_MOTOR_TURNING_MOTOR_CHANNEL_ID,
+                Constants.BACK_RIGHT_MOTOR_CHASSIS_ANGULAR_OFFSET);
 
         // Initialize odometry with the current gyro angle and module positions.
         odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyro.getAngle()),
@@ -184,7 +184,7 @@ public class Drive extends SubsystemBase {
      */
     public void setX() {
         SwerveModuleState forwardState =
-                new SwerveModuleState(Constants.kSpeed, Rotation2d.fromDegrees(0));
+                new SwerveModuleState(Constants.DRIVE_NORMAL_SPEED, Rotation2d.fromDegrees(0));
         frontLeftModule.setDesiredState(forwardState);
         frontRightModule.setDesiredState(forwardState);
         backLeftModule.setDesiredState(forwardState);
@@ -197,7 +197,7 @@ public class Drive extends SubsystemBase {
      * @param desiredStates The desired module states.
      */
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.kMaxSpeed);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, Constants.DRIVE_MAX_SPEED);
         frontLeftModule.setDesiredState(desiredStates[0]);
         frontRightModule.setDesiredState(desiredStates[1]);
         backLeftModule.setDesiredState(desiredStates[2]);
