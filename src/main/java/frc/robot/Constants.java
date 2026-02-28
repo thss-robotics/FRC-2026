@@ -98,9 +98,11 @@ public class Constants {
     public static final int ELEVATOR_MAX_CURRENT = 38;
     
        ///////////// Intake /////////////
-    public static final int INTAKE_MOTOR_LEFT_ID = 9;
-    public static final int INTAKE_MOTOR_RIGHT_ID = 8;
-    public static final double INTAKE_SPEED = -1;
-    public static final double EJECT_SPEED = 1;
+    public static final int INTAKE_MOTOR_ID = 0; //Decide, TBD
+    public static final double INTAKE_SPEED = -0.5;
+    public static final double EJECT_SPEED = 0.5;
     
+           ///////////// Shooter /////////////
+    public static final int SHOOTER_MOTOR_ID = 9;
+    public static final double SHOOTER_SPEED = -1;
 }

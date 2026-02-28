@@ -5,6 +5,8 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -38,6 +40,7 @@ public class Robot extends LoggedRobot {
   private Drive driveSubsystem;
   private Elevator elevatorSubsystem;
   private Intake intakeSubsystem;
+  private Shooter shooterSubsystem;
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -58,6 +61,7 @@ public class Robot extends LoggedRobot {
     driveSubsystem = Drive.getInstance();
     elevatorSubsystem = Elevator.getInstance();
     intakeSubsystem = Intake.getInstance();
+    shooterSubsystem = Shooter.getInstance();
   }
 
   @Override
@@ -65,6 +69,7 @@ public class Robot extends LoggedRobot {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
     intakeSubsystem.outputTelemetry(isDisabled());
+    shooterSubsystem.outputTelemetry(isDisabled());
   }
 
   @Override
@@ -111,7 +116,6 @@ public class Robot extends LoggedRobot {
       elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
       elevatorSubsystem.manualControl(controller1.getRightY() / 9);
     }
-
     elevatorSubsystem.periodic();
 
     boolean runIntakeBack = controller2.getLeftBumper();
@@ -123,6 +127,14 @@ public class Robot extends LoggedRobot {
       intakeSubsystem.setIntakeState(IntakeState.EJECTING);
     } else if (currentIntakeState == IntakeState.INTAKING || currentIntakeState == IntakeState.EJECTING) {
       intakeSubsystem.setIntakeState(IntakeState.OFF);
+    }
+
+    boolean runShooter = controller2.getLeftBumper();
+        ShooterState currentShooterState = shooterSubsystem.getShooterState();
+    if (runShooter) {
+      shooterSubsystem.setShooterState(ShooterState.SHOOTING);
+    } else if (currentShooterState == ShooterState.SHOOTING) {
+      shooterSubsystem.setShooterState(ShooterState.OFF);
     }
   }
 

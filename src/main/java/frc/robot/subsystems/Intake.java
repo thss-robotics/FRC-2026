@@ -4,7 +4,6 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig; 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -42,7 +41,7 @@ public class Intake extends SubsystemBase {
             SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
         // Attach motors
-        IntakeMotor = new SparkFlex(Constants.INTAKE_MOTOR_LEFT_ID, MotorType.kBrushless);
+        IntakeMotor = new SparkFlex(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
         IntakeMotor.configure(
         intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -64,10 +63,8 @@ public class Intake extends SubsystemBase {
         switch (currentState) {
             case INTAKING:
                 IntakeMotor.set(Constants.INTAKE_SPEED);
-                IntakeMotor.set(Constants.INTAKE_SPEED);
                 break;
             case EJECTING:
-                IntakeMotor.set(Constants.EJECT_SPEED);
                 IntakeMotor.set(Constants.EJECT_SPEED);
                 break;
             case OFF:
