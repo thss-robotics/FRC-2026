@@ -64,6 +64,7 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
+    intakeSubsystem.outputTelemetry(isDisabled());
   }
 
   @Override
@@ -113,8 +114,8 @@ public class Robot extends LoggedRobot {
 
     elevatorSubsystem.periodic();
 
-    boolean runIntakeBack = controller1.getLeftBumper();
-    boolean runIntake = controller1.getRightBumper();
+    boolean runIntakeBack = controller2.getLeftBumper();
+    boolean runIntake = controller2.getRightBumper();
     IntakeState currentIntakeState = intakeSubsystem.getIntakeState();
     if (runIntake) {
       intakeSubsystem.setIntakeState(IntakeState.INTAKING);

@@ -100,7 +100,7 @@ public class Constants {
        ///////////// Intake /////////////
     public static final int INTAKE_MOTOR_LEFT_ID = 9;
     public static final int INTAKE_MOTOR_RIGHT_ID = 8;
-    public static final double INTAKE_SPEED = -0.5;
-    public static final double EJECT_SPEED = 0.5;
+    public static final double INTAKE_SPEED = -1;
+    public static final double EJECT_SPEED = 1;
     
 }
