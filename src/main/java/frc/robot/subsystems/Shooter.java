@@ -14,7 +14,9 @@ public class Shooter extends SubsystemBase {
     private static Shooter instance = null;
 
     // Motors
- public final SparkFlex ShooterMotor;
+ public final SparkFlex UpperShooterMotor;
+ public final SparkFlex LowerShooterMotor;
+
     // States
     public enum ShooterState {
         OFF,
@@ -37,8 +39,11 @@ public class Shooter extends SubsystemBase {
             SparkMaxConfig ShooterConfig = new SparkMaxConfig();
 
         // Attach motors
-        ShooterMotor = new SparkFlex(Constants.SHOOTER_MOTOR_ID, MotorType.kBrushless);
-        ShooterMotor.configure(
+        UpperShooterMotor = new SparkFlex(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        UpperShooterMotor.configure(
+        ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        LowerShooterMotor = new SparkFlex(Constants.LOWER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        UpperShooterMotor.configure(
         ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
@@ -58,25 +63,21 @@ public class Shooter extends SubsystemBase {
     private void updateMotor() {
         switch (currentState) {
             case SHOOTING:
-                ShooterMotor.set(Constants.SHOOTER_SPEED);
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_SPPED);
+                LowerShooterMotor.set(Constants.LOWER_SHOOTER_SPPED);
                 break;
             case OFF:
             default:
-                ShooterMotor.stopMotor();
+                UpperShooterMotor.stopMotor();
+                LowerShooterMotor.stopMotor();
                 break;
         }
     }
 
-    // BASE CONTROLS --------------------------------------------------->
-
-    public void stop() {
-        ShooterRunning = false;
-        ShooterMotor.stopMotor();
-    }
-
+    // LOGGING
     public void outputTelemetry(boolean isRobotDisabled) {
-        SmartDashboard.putNumber("Shooter Speed", ShooterMotor.get() * 100);
-        SmartDashboard.putNumber("Shooter Current", ShooterMotor.getOutputCurrent());
+        SmartDashboard.putNumber("Shooter Speed", UpperShooterMotor.get() * 100);
+        SmartDashboard.putNumber("Shooter Current", UpperShooterMotor.getOutputCurrent());
         SmartDashboard.putString("Shooter State", currentState.toString());
     }
 }

@@ -103,8 +103,10 @@ public class Constants {
     public static final double EJECT_SPEED = 0.5;
     
            ///////////// Shooter /////////////
-    public static final int SHOOTER_MOTOR_ID = 9;
-    public static final double SHOOTER_SPEED = -1;
+    public static final int UPPER_SHOOTER_MOTOR_ID = 9;
+    public static final int LOWER_SHOOTER_MOTOR_ID = 3; //Decide, TBD
+    public static final double UPPER_SHOOTER_SPPED = -1;
+    public static final double LOWER_SHOOTER_SPPED = -0.4;
 
                ///////////// Arm /////////////
     public static final int ARM_MOTOR_ID = 2; //Decide, TBD

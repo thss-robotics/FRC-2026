@@ -13,11 +13,9 @@ import frc.robot.Constants;
 public class Intake extends SubsystemBase {
     private static Intake instance = null;
 
-    // Intake Sensor
-    // DigitalInput intakeSensor = new DigitalInput(Constants.kIntakeMotorID);
-
     // Motors
  public final SparkFlex IntakeMotor;
+
     // States
     public enum IntakeState {
         OFF,
@@ -74,13 +72,7 @@ public class Intake extends SubsystemBase {
         }
     }
 
-    // BASE CONTROLS --------------------------------------------------->
-
-    public void stop() {
-        intakeRunning = false;
-        IntakeMotor.stopMotor();
-    }
-
+     // LOGGING
     public void outputTelemetry(boolean isRobotDisabled) {
         // SmartDashboard.putBoolean("Is Intaking", intakeSensor.get());
         SmartDashboard.putNumber("Intake Speed", IntakeMotor.get() * 100);
