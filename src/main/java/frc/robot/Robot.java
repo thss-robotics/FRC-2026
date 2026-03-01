@@ -116,16 +116,19 @@ public class Robot extends LoggedRobot {
           driveSubsystem.drive(0, 0, 0, true);
         }
 
-     if (controller1.getRightY() <= 0) {
-      elevatorSubsystem.direction = Constants.UP_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
+    //Arm Controls (Just a set speed currently, will likely be changed!)
+    boolean runArmFowards = controller2.getRightBumper();
+    boolean runArmBack = controller2.getLeftBumper();
+    ArmState currentArmState = armSubsystem.getArmState();
+    if (runArmFowards) {
+      armSubsystem.setArmState(ArmState.GOING_DOWN);
+    } else if (runArmBack) {
+      armSubsystem.setArmState(ArmState.GOING_UP);
+    } else if (currentArmState == ArmState.GOING_DOWN || currentArmState == ArmState.GOING_UP) {
+      armSubsystem.setArmState(ArmState.OFF);
     }
-    else { 
-      elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
-    }
-    elevatorSubsystem.periodic();
 
+    //Intake Controls
     boolean runIntakeBack = controller2.getLeftBumper();
     boolean runIntake = controller2.getRightBumper();
     IntakeState currentIntakeState = intakeSubsystem.getIntakeState();
@@ -137,6 +140,7 @@ public class Robot extends LoggedRobot {
       intakeSubsystem.setIntakeState(IntakeState.OFF);
     }
 
+    //Shooter Controls
     boolean runShooterMax = controller2.getAButton();
     boolean runShooterMid = controller2.getBButton();
     boolean runShooterLow = controller2.getXButton();
@@ -153,7 +157,16 @@ public class Robot extends LoggedRobot {
     shooterSubsystem.setShooterState(ShooterState.OFF);
     }
 
-    
+     //Elevator Controls
+     if (controller1.getRightY() <= 0) {
+      elevatorSubsystem.direction = Constants.UP_AMOUNT;
+      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
+    }
+    else { 
+      elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
+      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
+    }
+    elevatorSubsystem.periodic();
   }
 
   /**

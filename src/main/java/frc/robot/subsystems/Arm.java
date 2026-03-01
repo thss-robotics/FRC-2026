@@ -59,6 +59,10 @@ public class Arm extends SubsystemBase {
         updateMotor();
     }
 
+        public ArmState getArmState() {
+        return currentState;
+    }
+
     private void updateMotor() {
         switch (currentState) {
             case GOING_UP:
