@@ -105,4 +105,9 @@ public class Constants {
            ///////////// Shooter /////////////
     public static final int SHOOTER_MOTOR_ID = 9;
     public static final double SHOOTER_SPEED = -1;
+
+               ///////////// Arm /////////////
+    public static final int ARM_MOTOR_ID = 2; //Decide, TBD
+    public static final double ARM_UP_SPEED = -0.5;
+    public static final double ARM_DOWN_SPEED = 0.5;
 }

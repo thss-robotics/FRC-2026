@@ -38,7 +38,7 @@ public class Intake extends SubsystemBase {
 
     private Intake() {
 
-            SparkMaxConfig intakeConfig = new SparkMaxConfig();
+    SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
         // Attach motors
         IntakeMotor = new SparkFlex(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);

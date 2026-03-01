@@ -7,6 +7,8 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterState;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Arm.ArmState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class Robot extends LoggedRobot {
   private Elevator elevatorSubsystem;
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
+  private Arm armSubsystem;
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -62,6 +65,7 @@ public class Robot extends LoggedRobot {
     elevatorSubsystem = Elevator.getInstance();
     intakeSubsystem = Intake.getInstance();
     shooterSubsystem = Shooter.getInstance();
+    armSubsystem = Arm.getInstance();
   }
 
   @Override
@@ -70,6 +74,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
     intakeSubsystem.outputTelemetry(isDisabled());
     shooterSubsystem.outputTelemetry(isDisabled());
+    armSubsystem.outputTelemetry(isDisabled());
   }
 
   @Override
@@ -136,6 +141,8 @@ public class Robot extends LoggedRobot {
     } else if (currentShooterState == ShooterState.SHOOTING) {
       shooterSubsystem.setShooterState(ShooterState.OFF);
     }
+
+    
   }
 
   /**
