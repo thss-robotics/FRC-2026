@@ -117,8 +117,8 @@ public class Robot extends LoggedRobot {
         }
 
     //Arm Controls (Just a set speed currently, will likely be changed!)
-    boolean runArmFowards = controller2.getRightBumper();
-    boolean runArmBack = controller2.getLeftBumper();
+    boolean runArmFowards = controller2.getLeftStickButton();
+    boolean runArmBack = controller2.getRightStickButton();
     ArmState currentArmState = armSubsystem.getArmState();
     if (runArmFowards) {
       armSubsystem.setArmState(ArmState.GOING_DOWN);
