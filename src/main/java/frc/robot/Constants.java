@@ -96,6 +96,9 @@ public class Constants {
     public static final double ELEVATOR_MAX_ACCELERATION = 200;
 
     public static final int ELEVATOR_MAX_CURRENT = 38;
+
+    public static final double ELEVATOR_UP_FORCE_REDUCTOR = 2.5;
+    public static final double ELEVATOR_DOWN_FORCE_REDUCTOR = 9;
     
        ///////////// Intake /////////////
     public static final int INTAKE_MOTOR_ID = 0; //Decide, TBD

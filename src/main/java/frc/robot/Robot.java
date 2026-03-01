@@ -98,7 +98,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void teleopPeriodic() {
 
-    // Red field relative (with robot facing )
+    // Field relative (with robot front facing towards the opposing alliance)
     double forward = -Math.signum(controller1.getLeftY())
         * Math.pow(Math.abs(controller1.getLeftY()), 2) / speedMode;
     double strafe = Math.signum(controller1.getLeftX())
@@ -109,19 +109,20 @@ public class Robot extends LoggedRobot {
     rotation = getRotation();
 
     // Command the drive subsystem directly.
-    if (!controller1.getYButton()) {
       driveSubsystem.drive(xSpeed, ySpeed, rotation, true);
-    } else {
-      driveSubsystem.drive(0, 0, 0, true);
-    }
+
+    //disables driving
+        if (controller1.getRawButton(7) & controller1.getRawButton(8)) {
+          driveSubsystem.drive(0, 0, 0, true);
+        }
 
      if (controller1.getRightY() <= 0) {
       elevatorSubsystem.direction = Constants.UP_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / 2.5);
+      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
     }
     else { 
       elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / 9);
+      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
     }
     elevatorSubsystem.periodic();
 
@@ -149,7 +150,7 @@ public class Robot extends LoggedRobot {
     } else if (currentShooterState == ShooterState.MAX_SHOOTING || 
     currentShooterState == ShooterState.MID_SHOOTING || 
     currentShooterState == ShooterState.LOW_SHOOTING)  {
-      shooterSubsystem.setShooterState(ShooterState.OFF);
+    shooterSubsystem.setShooterState(ShooterState.OFF);
     }
 
     
