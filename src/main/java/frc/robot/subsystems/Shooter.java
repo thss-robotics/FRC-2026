@@ -20,7 +20,9 @@ public class Shooter extends SubsystemBase {
     // States
     public enum ShooterState {
         OFF,
-        SHOOTING,
+        MAX_SHOOTING,
+        MID_SHOOTING,
+        LOW_SHOOTING
     }
 
     private ShooterState currentState = ShooterState.OFF;
@@ -62,9 +64,17 @@ public class Shooter extends SubsystemBase {
 
     private void updateMotor() {
         switch (currentState) {
-            case SHOOTING:
-                UpperShooterMotor.set(Constants.UPPER_SHOOTER_SPPED);
-                LowerShooterMotor.set(Constants.LOWER_SHOOTER_SPPED);
+            case MAX_SHOOTING:
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
+                LowerShooterMotor.set(Constants.LOWER_SHOOTER_SPEED);
+                break;
+            case MID_SHOOTING:
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MID_SPEED);
+                LowerShooterMotor.set(Constants.LOWER_SHOOTER_SPEED);
+                break;
+            case LOW_SHOOTING:
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_LOW_SPEED);
+                LowerShooterMotor.set(Constants.LOWER_SHOOTER_SPEED);
                 break;
             case OFF:
             default:

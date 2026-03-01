@@ -38,7 +38,9 @@ public class Robot extends LoggedRobot {
 
   // Controller and subsystems
   private final XboxController controller1 = new XboxController(Constants.XBOX_CONTROLLER_1_PORT);
-    private final XboxController controller2 = new XboxController(Constants.XBOX_CONTROLLER_2_PORT); //Make this use mechanisms
+  private final XboxController controller2 = new XboxController(Constants.XBOX_CONTROLLER_2_PORT); 
+  //Make this use mechanisms
+
   private Drive driveSubsystem;
   private Elevator elevatorSubsystem;
   private Intake intakeSubsystem;
@@ -134,11 +136,19 @@ public class Robot extends LoggedRobot {
       intakeSubsystem.setIntakeState(IntakeState.OFF);
     }
 
-    boolean runShooter = controller2.getLeftBumper();
-        ShooterState currentShooterState = shooterSubsystem.getShooterState();
-    if (runShooter) {
-      shooterSubsystem.setShooterState(ShooterState.SHOOTING);
-    } else if (currentShooterState == ShooterState.SHOOTING) {
+    boolean runShooterMax = controller2.getAButton();
+    boolean runShooterMid = controller2.getBButton();
+    boolean runShooterLow = controller2.getXButton();
+    ShooterState currentShooterState = shooterSubsystem.getShooterState();
+    if (runShooterMax) {
+      shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
+    } else if (runShooterMid)  {
+      shooterSubsystem.setShooterState(ShooterState.MID_SHOOTING);
+    } else if (runShooterLow)  {
+      shooterSubsystem.setShooterState(ShooterState.LOW_SHOOTING);
+    } else if (currentShooterState == ShooterState.MAX_SHOOTING || 
+    currentShooterState == ShooterState.MID_SHOOTING || 
+    currentShooterState == ShooterState.LOW_SHOOTING)  {
       shooterSubsystem.setShooterState(ShooterState.OFF);
     }
 
