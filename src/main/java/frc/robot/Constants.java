@@ -113,10 +113,44 @@ public class Constants {
         public static final double UPPER_SHOOTER_LOW_SPEED = -0.5;
     public static final double LOWER_SHOOTER_SPEED = -0.5;
 
-    ///////////// Arm, all values to be tested and subject to change /////////////
-    public static final int ARM_MOTOR_ID = 6; 
-    public static final double ARM_UP_SPEED = -0.25;
-    public static final double ARM_DOWN_SPEED = 0.25;
-    public static final double ARM_DRIVE_POSITION = 0.156;
-    public static final double ARM_INTAKE_POSITION = 0;
+    ///////////// Arm Constants /////////////
+    public static final class ArmConstants {
+        // Motor
+        public static final int ARM_MOTOR_ID = 5; 
+        public static final int ARM_FOLOWER_MOTOR_ID = 6; 
+        public static final int ARM_CURRENT_LIMIT = 40; // amps
+
+        // Encoder soft limits (relative units from DutyCycleEncoder)
+        public static final double ARM_MIN_LIMIT = 0.01; // REPLACE WITH SAFE MIN
+        public static final double ARM_MAX_LIMIT = 0.47; // REPLACE WITH SAFE MAX
+        public static final double ARM_SLOW_ZONE_LOWER = ARM_MIN_LIMIT * 1.13; // start slowing down near bottom (mutiplication factor of 15 deg)
+        public static final double ARM_SLOW_ZONE_UPPER = ARM_MAX_LIMIT - (ARM_MAX_LIMIT * 1.13); // start slowing down near top (mutiplication factor of 15 deg)
+
+        // PID
+        public static final double ARM_PID_P = 2.5; 
+        public static final double ARM_PID_I = 0.02; 
+        public static final double ARM_PID_D = 0.1;
+        public static final double ARM_PID_TOLERANCE = 0.005;
+        public static final double ARM_PID_INTEGRATOR_MIN = -0.4;
+        public static final double ARM_PID_INTEGRATOR_MAX = 0.4;
+
+        // Arm Position
+        public static final double ARM_STOWED_POSITION = 0.05;
+        public static final double ARM_DRIVE_POSITION = 0.25;
+        public static final double ARM_DEPLOYED_POSITION = 0.45;
+        
+        //encoder and safty switches
+        public static final int ARM_ENCODER_PORT = 0;
+        public static final int ARM_LIMIT_SWITCH = 5;
+
+        // Velocity limits
+        public static final double ARM_MAX_VELOCITY = 0.25;
+        public static final double ARM_MIN_EFFECTIVE_POWER = 0.1;
+
+        // Power modifiers
+        public static final double ARM_UP_POWER_SCALE = 1.1;
+        public static final double ARM_DOWN_POWER_SCALE = 0.9;
+    }
 }
+
+
