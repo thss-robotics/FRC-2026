@@ -47,7 +47,7 @@ public class Arm extends SubsystemBase {
         SparkMaxConfig ArmConfig = new SparkMaxConfig();
         ArmConfig.smartCurrentLimit(Constants.ArmConstants.ARM_CURRENT_LIMIT); // REPLACE if breaker trips
 
-        ArmMotor = new SparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushed);
+        ArmMotor = new SparkMax(Constants.ArmConstants.ARM_MOTOR_ID, MotorType.kBrushed);
         ArmMotor.configure(ArmConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
         armEncoder = new DutyCycleEncoder(Constants.ArmConstants.ARM_ENCODER_PORT);
