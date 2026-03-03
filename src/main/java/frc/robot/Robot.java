@@ -42,7 +42,7 @@ public class Robot extends LoggedRobot {
   //Make this use mechanisms
 
   private Drive driveSubsystem;
-  private Elevator elevatorSubsystem;
+  // private Elevator elevatorSubsystem;
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
   private Arm armSubsystem;
@@ -64,7 +64,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate subsystems
     driveSubsystem = Drive.getInstance();
-    elevatorSubsystem = Elevator.getInstance();
+    // elevatorSubsystem = Elevator.getInstance();
     intakeSubsystem = Intake.getInstance();
     shooterSubsystem = Shooter.getInstance();
     armSubsystem = Arm.getInstance();
@@ -73,10 +73,10 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     // Run the command scheduler
-    CommandScheduler.getInstance().run();
-    intakeSubsystem.outputTelemetry(isDisabled());
-    shooterSubsystem.outputTelemetry(isDisabled());
-    armSubsystem.outputTelemetry(isDisabled());
+    // CommandScheduler.getInstance().run();
+    // intakeSubsystem.outputTelemetry(isDisabled());
+    // shooterSubsystem.outputTelemetry(isDisabled());
+    // armSubsystem.outputTelemetry(isDisabled());
   }
 
   @Override
@@ -108,25 +108,24 @@ public class Robot extends LoggedRobot {
     ySpeed = strafe;
     rotation = getRotation();
 
-    // Command the drive subsystem directly.
+ // Command the drive subsystem directly.
+    if (!controller1.getYButton()) {
       driveSubsystem.drive(xSpeed, ySpeed, rotation, true);
-
-    //disables driving
-        if (controller1.getRawButton(7) & controller1.getRawButton(8)) {
-          driveSubsystem.drive(0, 0, 0, true);
-        }
+    } else {
+      driveSubsystem.drive(0, 0, 0, true);
+    }
 
     //Arm Controls (Just a set speed currently, will likely be changed!)
-    boolean runArmFowards = controller2.getLeftStickButton();
-    boolean runArmBack = controller2.getRightStickButton();
-    ArmState currentArmState = armSubsystem.getArmState();
-    if (runArmFowards) {
-      armSubsystem.setArmState(ArmState.GOING_DOWN);
-    } else if (runArmBack) {
-      armSubsystem.setArmState(ArmState.GOING_UP);
-    } else if (currentArmState == ArmState.GOING_DOWN || currentArmState == ArmState.GOING_UP) {
-      armSubsystem.setArmState(ArmState.OFF);
-    }
+    double armVelocity;
+
+    armVelocity = controller2.getRightY();
+
+      if(!controller2.getRightStickButton()){
+        armSubsystem.armPeriodic(armVelocity);
+      } else {
+        armSubsystem.moveArm(0, true);
+        armSubsystem.stop();
+      }
 
     //Intake Controls
     boolean runIntakeBack = controller2.getLeftBumper();
@@ -158,15 +157,15 @@ public class Robot extends LoggedRobot {
     }
 
      //Elevator Controls
-     if (controller1.getRightY() <= 0) {
-      elevatorSubsystem.direction = Constants.UP_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
-    }
-    else { 
-      elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
-      elevatorSubsystem.manualControl(controller1.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
-    }
-    elevatorSubsystem.periodic();
+    //  if (controller2.getRightY() <= 0) {
+    //   elevatorSubsystem.direction = Constants.UP_AMOUNT;
+    //   elevatorSubsystem.manualControl(controller2.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
+    // }
+    // else { 
+    //   elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
+    //   elevatorSubsystem.manualControl(controller.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
+    // }
+    // elevatorSubsystem.periodic();
   }
 
   /**

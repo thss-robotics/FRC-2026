@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig; 
 
@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
     private static Intake instance = null;
 
     // Motors
- public final SparkFlex IntakeMotor;
+ public final SparkMax IntakeMotor;
 
     // States
     public enum IntakeState {
@@ -39,7 +39,7 @@ public class Intake extends SubsystemBase {
     SparkMaxConfig intakeConfig = new SparkMaxConfig();
 
         // Attach motors
-        IntakeMotor = new SparkFlex(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
+        IntakeMotor = new SparkMax(Constants.INTAKE_MOTOR_ID, MotorType.kBrushless);
         IntakeMotor.configure(
         intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -73,10 +73,10 @@ public class Intake extends SubsystemBase {
     }
 
      // LOGGING
-    public void outputTelemetry(boolean isRobotDisabled) {
-        // SmartDashboard.putBoolean("Is Intaking", intakeSensor.get());
-        SmartDashboard.putNumber("Intake Speed", IntakeMotor.get() * 100);
-        SmartDashboard.putNumber("Intake Current", IntakeMotor.getOutputCurrent());
-        SmartDashboard.putString("Intake State", currentState.toString());
-    }
+    // public void outputTelemetry(boolean isRobotDisabled) {
+    //     // SmartDashboard.putBoolean("Is Intaking", intakeSensor.get());
+    //     SmartDashboard.putNumber("Intake Speed", IntakeMotor.get() * 100);
+    //     SmartDashboard.putNumber("Intake Current", IntakeMotor.getOutputCurrent());
+    //     SmartDashboard.putString("Intake State", currentState.toString());
+    // }
 }

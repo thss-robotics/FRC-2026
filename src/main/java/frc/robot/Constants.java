@@ -9,8 +9,8 @@ public class Constants {
     public static final int DRIVING_MOTOR_PIN_ION_TEETH = 14;
 
     // Calculations for driving motor conversion factors and feed forward
-    public static final double DRIVING_MOTOR_FREE_SPEED_RPS = 5676 / 60.0;
-    public static final double WHEEL_DIAMETER_METERS = 0.1016; //originally 0.0762
+    public static final double DRIVING_MOTOR_FREE_SPEED_RPS = 6784 / 60.0;
+    public static final double WHEEL_DIAMETER_METERS = 0.088; //originally 0.0762
     public static final double WHEEL_CIRCUMFERENCE_METERS = WHEEL_DIAMETER_METERS * Math.PI;
 
     // Motor configuration reductions: 45 teeth on the wheel's bevel gear, 22 on the first-stage
@@ -19,16 +19,16 @@ public class Constants {
             (45.0 * 22) / (DRIVING_MOTOR_PIN_ION_TEETH * 15);
     public static final double DRIVE_WHEEL_FREE_SPEED_RPS =
             (DRIVING_MOTOR_FREE_SPEED_RPS * WHEEL_CIRCUMFERENCE_METERS) / DRIVING_MOTOR_REDUCTION;
-    public static final double WHEEL_RADIUS = 0.0508;
+    public static final double WHEEL_RADIUS = 0.044;
 
     ///////////// Drivetrain Parameters /////////////
-    public static final double DRIVE_MAX_SPEED = 2.0; // Maximum speed (m/s)
-    public static final double DRIVE_NORMAL_SPEED = 1.7; // Nominal operating speed (m/s)
-    public static final double DRIVE_ANGULAR_MAX_SPEED = 3 * Math.PI; // Maximum angular speed (rad/s)
+    public static final double DRIVE_MAX_SPEED = 7; // Maximum speed (m/s)
+    public static final double DRIVE_NORMAL_SPEED = 6; // Nominal operating speed (m/s)
+    public static final double DRIVE_ANGULAR_MAX_SPEED = 10 * Math.PI; // Maximum angular speed (rad/s)
 
     // Module locations relative to the robot's center (in feet)
-    public static final double POSITIVE_MODULE_FROM_ROBOT_CENTRE = 1.8; //3.005, to be changed 
-    public static final double NEGATIVE_MODULE_FROM_ROBOT_CENTRE = -1.8; //-3.005, to be changed
+    public static final double POSITIVE_MODULE_FROM_ROBOT_CENTRE = 1.3; //3.005, to be changed 
+    public static final double NEGATIVE_MODULE_FROM_ROBOT_CENTRE = -1.3; //-3.005, to be changed
 
     ///////////// Swerve Module Channel IDs /////////////
     public static final int FRONT_LEFT_MOTOR_DRIVE_MOTOR_CHANNEL_ID = 11;
@@ -58,8 +58,8 @@ public class Constants {
 
     ///////////// Autonomous Constants /////////////
     public static final class AutoConstants {
-        public static final double AUTO_DRIVE_MAX_SPEED = 2;
-        public static final double AUTO_DRIVE_MAX_ACCELERATION = 1.3;
+        public static final double AUTO_DRIVE_MAX_SPEED = 10;
+        public static final double AUTO_DRIVE_MAX_ACCELERATION = 5;
         public static final double AUTO_DRIVE_ANGULAR_MAX_SPEED = Math.PI / 2;
         public static final double AUTO_DRIVE_ANGULAR_MAX_SPEED_SQUARED = Math.PI / 2;
 
@@ -101,20 +101,22 @@ public class Constants {
     public static final double ELEVATOR_DOWN_FORCE_REDUCTOR = 9;
     
        ///////////// Intake /////////////
-    public static final int INTAKE_MOTOR_ID = 0; //Decide, TBD
-    public static final double INTAKE_SPEED = -0.5;
+    public static final int INTAKE_MOTOR_ID = 7;
+    public static final double INTAKE_SPEED = -0.4;
     public static final double EJECT_SPEED = 0.5;
     
            ///////////// Shooter /////////////
-    public static final int UPPER_SHOOTER_MOTOR_ID = 9;
-    public static final int LOWER_SHOOTER_MOTOR_ID = 3; //Decide, TBD
+    public static final int UPPER_SHOOTER_MOTOR_ID = 8;
+    public static final int LOWER_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.75;
         public static final double UPPER_SHOOTER_LOW_SPEED = -0.5;
-    public static final double LOWER_SHOOTER_SPEED = -0.4;
+    public static final double LOWER_SHOOTER_SPEED = -0.5;
 
-               ///////////// Arm /////////////
-    public static final int ARM_MOTOR_ID = 2; //Decide, TBD
-    public static final double ARM_UP_SPEED = -0.5;
-    public static final double ARM_DOWN_SPEED = 0.5;
+    ///////////// Arm, all values to be tested and subject to change /////////////
+    public static final int ARM_MOTOR_ID = 6; 
+    public static final double ARM_UP_SPEED = -0.25;
+    public static final double ARM_DOWN_SPEED = 0.25;
+    public static final double ARM_DRIVE_POSITION = 0.156;
+    public static final double ARM_INTAKE_POSITION = 0;
 }

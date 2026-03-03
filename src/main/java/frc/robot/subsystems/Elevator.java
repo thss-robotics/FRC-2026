@@ -137,7 +137,7 @@ public class Elevator extends SubsystemBase {
   public void stop() {
     mPeriodicIO.isElevatorPosControl = false;
     mPeriodicIO.elevatorPower = 0.0;
-    Motor1.set(0.0);
+    Motor1.stopMotor();
   }
 
   /*---------------------------------- Telemetry Output ----------------------------------*/
