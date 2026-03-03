@@ -77,18 +77,29 @@ public class Robot extends LoggedRobot {
     armSubsystem.outputTelemetry(isDisabled());
   }
 
+
+  //For autonomousInit the two things to be done are to start a timer which would last 3-5s and run the shooter at the high speed.
   @Override
   public void autonomousInit() {
-    // Generate and schedule the autonomous command.
-
-    Command autoCommand = getAutonomousCommand();
-    if (autoCommand != null) {
-      autoCommand.schedule();
-    }
+   shooterSubsystem.setShooterState(ShooterState.SHOOTING);
   }
 
+  //For autonomousPeriodic it would continuously check if any of the timers have expired, and then run the next command if they are.
+  //After the first timer goes out, the shooter will stop and the drivetrain will have all of the turning motors's absolute encoder values to be equal to pi/2
+  // and run all driving motors in the positive direction, along with starting a timer which will last 2-4s (Going from the centre to the left/right of the tower).
+  //Once the second timer goes out, the drivetrain will have all of the turning motors's absolute encoder values to be equal to 0
+  // and run all driving motors in the positive direction, along with starting a timer which will last 5-7s (Going to be direct in line with the tower).
+  //Once the third timer goes out, the drivetrain will stop and the elevator motor(s) will run at the teleoperated power (~0.8/1) for long enough to just have 
+  // the robot not be touching the ground, this would likely be starting a timer which lasts ~2s and disables the elevator once it goes out.
+
+  //Command to directly run the drivetrain: driveSubsystem.drive(double xSpeed, double ySpeed, double rotation, boolean field relative true);
+  //Run the elevator up with this command:  elevatorSubsystem.manualControl(0.8 / 2.5); (Double is subject to change!)
+
+
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+
+  }
 
   @Override
   public void teleopInit() {}
