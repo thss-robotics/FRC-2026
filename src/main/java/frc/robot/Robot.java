@@ -24,6 +24,7 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,7 +45,13 @@ public class Robot extends LoggedRobot {
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
   private Arm armSubsystem;
-  
+
+  // Timer-based autonomous state
+  private final Timer autoTimer = new Timer();
+  /** Current phase: AutoConstants.AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR, AUTO_DONE */
+  private int autoPhase = AutoConstants.AUTO_SHOOT;
+  private double autoPhaseDuration = 0;
+
   // Singleton instance of Robot
   private static Robot instance = null;
 
@@ -77,28 +84,85 @@ public class Robot extends LoggedRobot {
     armSubsystem.outputTelemetry(isDisabled());
   }
 
-
-  //For autonomousInit the two things to be done are to start a timer which would last 3-5s and run the shooter at the high speed.
+  // For autonomousInit the two things to be done are to start a timer which would last 3-5s and run the shooter at the high speed.
   @Override
   public void autonomousInit() {
-   shooterSubsystem.setShooterState(ShooterState.SHOOTING);
+    if (!AutoConstants.AUTO_ENABLED) {
+      return;
+    }
+    shooterSubsystem.setShooterState(ShooterState.SHOOTING);
+    autoPhase = AutoConstants.AUTO_SHOOT;
+    autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[AutoConstants.AUTO_SHOOT];
+    autoTimer.reset();
+    autoTimer.start();
   }
 
-  //For autonomousPeriodic it would continuously check if any of the timers have expired, and then run the next command if they are.
-  //After the first timer goes out, the shooter will stop and the drivetrain will have all of the turning motors's absolute encoder values to be equal to pi/2
+  // For autonomousPeriodic it would continuously check if any of the timers have expired, and then run the next command if they are.
+  // After the first timer goes out, the shooter will stop and the drivetrain will have all of the turning motors's absolute encoder values to be equal to pi/2
   // and run all driving motors in the positive direction, along with starting a timer which will last 2-4s (Going from the centre to the left/right of the tower).
-  //Once the second timer goes out, the drivetrain will have all of the turning motors's absolute encoder values to be equal to 0
+  // Once the second timer goes out, the drivetrain will have all of the turning motors's absolute encoder values to be equal to 0
   // and run all driving motors in the positive direction, along with starting a timer which will last 5-7s (Going to be direct in line with the tower).
-  //Once the third timer goes out, the drivetrain will stop and the elevator motor(s) will run at the teleoperated power (~0.8/1) for long enough to just have 
+  // Once the third timer goes out, the drivetrain will stop and the elevator motor(s) will run at the teleoperated power (~0.8/1) for long enough to just have
   // the robot not be touching the ground, this would likely be starting a timer which lasts ~2s and disables the elevator once it goes out.
+  //
+  // Command to directly run the drivetrain: driveSubsystem.drive(double xSpeed, double ySpeed, double rotation, boolean field relative true);
+  // Run the elevator up with this command: elevatorSubsystem.manualControl(0.8 / 2.5); (Double is subject to change!)
 
-  //Command to directly run the drivetrain: driveSubsystem.drive(double xSpeed, double ySpeed, double rotation, boolean field relative true);
-  //Run the elevator up with this command:  elevatorSubsystem.manualControl(0.8 / 2.5); (Double is subject to change!)
 
-
+/* Based on example from:
+https://frc6399.github.io/intro2frc/wpilib/1.html
+https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Timer.html
+*/
   @Override
   public void autonomousPeriodic() {
+    if (!AutoConstants.AUTO_ENABLED) {
+      return;
+    }
+    if (autoTimer.hasElapsed(autoPhaseDuration)) {
+      autoTimer.reset();
+      autoTimer.start();
+      autoPhase++;
+      if (autoPhase > AutoConstants.AUTO_DONE) {
+        autoPhase = AutoConstants.AUTO_DONE;
+      } else if (autoPhase <= AutoConstants.AUTO_ELEVATOR) {
+        autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[autoPhase];
+      }
+      if (autoPhase >= AutoConstants.AUTO_STRAFE) {
+        shooterSubsystem.setShooterState(ShooterState.OFF);
+      }
+    }
 
+    switch (autoPhase) {
+      case AutoConstants.AUTO_SHOOT:
+        break;
+      case AutoConstants.AUTO_STRAFE:
+        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+        break;
+      case AutoConstants.AUTO_FORWARD:
+        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
+        break;
+      case AutoConstants.AUTO_ELEVATOR:
+        driveSubsystem.drive(0, 0, 0, true);
+        elevatorSubsystem.setElevatorPower(0.8 / 2.5);
+        break;
+      case AutoConstants.AUTO_DONE:
+      default:
+        elevatorSubsystem.stop();
+        driveSubsystem.drive(0, 0, 0, true);
+        break;
+    }
+
+    elevatorSubsystem.periodic();
+  }
+
+  /** Clean up autonomous so teleop starts from a known state (e.g. if auto is disabled early). 
+  https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/IterativeRobotBase.html 
+  */
+  @Override
+  public void autonomousExit() {
+    shooterSubsystem.setShooterState(ShooterState.OFF);
+    driveSubsystem.drive(0, 0, 0, true);
+    elevatorSubsystem.stop();
   }
 
   @Override

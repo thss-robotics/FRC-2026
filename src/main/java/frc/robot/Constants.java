@@ -71,6 +71,27 @@ public class Constants {
         public static final TrapezoidProfile.Constraints THETA_CONTROLLER_CONSTAINTS =
                 new TrapezoidProfile.Constraints(AUTO_DRIVE_ANGULAR_MAX_SPEED,
                         AUTO_DRIVE_ANGULAR_MAX_SPEED_SQUARED);
+
+        /** Set to true to run the timer-based autonomous routine; false to do nothing during auto. */
+        public static final boolean AUTO_ENABLED = false;
+
+        // Timer-based autonomous phase indices
+        public static final int AUTO_SHOOT = 0;
+        public static final int AUTO_STRAFE = 1;
+        public static final int AUTO_FORWARD = 2;
+        public static final int AUTO_ELEVATOR = 3;
+        public static final int AUTO_DONE = 4;
+
+        /** Duration in seconds per phase. Index by AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR. */
+        public static final double[] AUTO_PHASE_DURATION_SEC = {
+            4.0,  // AUTO_SHOOT: 3–5 s
+            3.0,  // AUTO_STRAFE: 2–4 s (centre to left/right of tower)
+            6.0,  // AUTO_FORWARD: 5–7 s (in line with tower)
+            2.0   // AUTO_ELEVATOR
+        };
+
+        /** Drive input for auto (fraction, same scale as teleop). */
+        public static final double AUTO_DRIVE_SPEED = 0.35;
     }
         ///////////// Elevator (Values To Be Tested) /////////////
     
