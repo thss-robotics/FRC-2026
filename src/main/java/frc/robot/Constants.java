@@ -25,6 +25,7 @@ public class Constants {
     public static final double DRIVE_MAX_SPEED = 6; // Maximum speed (m/s)
     public static final double DRIVE_NORMAL_SPEED = 5; // Nominal operating speed (m/s)
     public static final double DRIVE_ANGULAR_MAX_SPEED = 8 * Math.PI; // Maximum angular speed (rad/s)
+    public static final double DRIVE_DEADBAND = 0.1;
 
     // Module locations relative to the robot's center (in feet)
     public static final double POSITIVE_MODULE_FROM_ROBOT_CENTRE = 1.8; //3.005, to be changed 
@@ -94,8 +95,8 @@ public class Constants {
 
     public static final double ELEVATOR_MAX_VELOCITY = 65;
     public static final double ELEVATOR_MAX_ACCELERATION = 200;
-
     public static final int ELEVATOR_MAX_CURRENT = 38;
+    public static final double ELEVATOR_DEADBAND = 0.05;
 
     public static final double ELEVATOR_UP_FORCE_REDUCTOR = 2.5;
     public static final double ELEVATOR_DOWN_FORCE_REDUCTOR = 9;
@@ -112,10 +113,42 @@ public class Constants {
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.5;
     public static final double INTAKE_SHOOTER_SPEED = -0.35;
 
-    ///////////// Arm, all values to be tested and subject to change /////////////
-    public static final int ARM_MOTOR_ID = 6; 
-    public static final double ARM_UP_SPEED = -0.25;
-    public static final double ARM_DOWN_SPEED = 0.25;
-    public static final double ARM_DRIVE_POSITION = 0.156;
-    public static final double ARM_INTAKE_POSITION = 0;
+     ///////////// Arm Constants /////////////
+     /// 
+        // Motors
+        public static final int ARM_MOTOR_ID = 31; 
+        public static final int ARM_FOLOWER_MOTOR_ID = 32; 
+        public static final int ARM_CURRENT_LIMIT = 40; // amps
+
+        // Encoder soft limits (relative units from DutyCycleEncoder)
+        public static final double ARM_MIN_LIMIT = 0.01; // REPLACE WITH SAFE MIN
+        public static final double ARM_MAX_LIMIT = 0.47; // REPLACE WITH SAFE MAX
+        public static final double ARM_SLOW_ZONE_LOWER = ARM_MIN_LIMIT * 1.13; // start slowing down near bottom (mutiplication factor of 15 deg)
+        public static final double ARM_SLOW_ZONE_UPPER = ARM_MAX_LIMIT - (ARM_MAX_LIMIT * 1.13); // start slowing down near top (mutiplication factor of 15 deg)
+
+        // PID
+        public static final double ARM_PID_P = 2.5; 
+        public static final double ARM_PID_I = 0.02; 
+        public static final double ARM_PID_D = 0.1;
+        public static final double ARM_PID_TOLERANCE = 0.005;
+        public static final double ARM_PID_INTEGRATOR_MIN = -0.4;
+        public static final double ARM_PID_INTEGRATOR_MAX = 0.4;
+
+        // Arm Position
+        public static final double ARM_STOWED_POSITION = 0.05;
+        public static final double ARM_DRIVE_POSITION = 0.25;
+        public static final double ARM_DEPLOYED_POSITION = 0.45;
+        
+        //encoder and safty switches
+        public static final int ARM_ENCODER_PORT = 8;
+        public static final int ARM_LIMIT_SWITCH = 5;
+
+        // Velocity limits
+        public static final double ARM_MAX_VELOCITY = 0.25;
+        public static final double ARM_MIN_EFFECTIVE_POWER = 0.1;
+        public static final double ARM_DEADBAND = 0.05;
+
+        // Power modifiers
+        public static final double ARM_UP_POWER_SCALE = 1.1;
+        public static final double ARM_DOWN_POWER_SCALE = 0.9;
 }

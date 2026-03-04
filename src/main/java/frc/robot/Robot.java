@@ -9,7 +9,6 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Arm.ArmState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -116,17 +115,11 @@ public class Robot extends LoggedRobot {
       driveSubsystem.drive(0, 0, 0, true);
     }
 
-    //Arm Controls (Just a set speed currently, will likely be changed!)
+    //Arm Controls (Only Manual control without preset locations currently)
     double armVelocity;
 
-    armVelocity = controller2.getRightY();
-
-      if(!controller2.getRightStickButton()){
-        armSubsystem.armPeriodic(armVelocity);
-      } else {
-        armSubsystem.moveArm(0, true);
-        armSubsystem.stop();
-      }
+    armVelocity = controller2.getLeftY();
+    armSubsystem.moveArm(armVelocity, 0.50);
 
     //Intake Controls
     boolean runIntake = controller2.getLeftBumper();

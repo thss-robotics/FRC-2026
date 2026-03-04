@@ -151,11 +151,11 @@ public class Drive extends SubsystemBase {
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         // Reverse controls (rotate 180 degrees)
-        if (Math.abs(xSpeed) < 0.1) {
+        if (Math.abs(xSpeed) < Constants.DRIVE_DEADBAND) {
             xSpeed = 0;
         }
 
-        if (Math.abs(ySpeed) < 0.1) {
+        if (Math.abs(ySpeed) < Constants.DRIVE_DEADBAND) {
             ySpeed = 0;
         }
 
