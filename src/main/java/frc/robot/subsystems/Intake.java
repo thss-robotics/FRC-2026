@@ -20,7 +20,6 @@ public class Intake extends SubsystemBase {
     public enum IntakeState {
         OFF,
         INTAKING,
-        EJECTING,
     }
 
     private IntakeState currentState = IntakeState.OFF;
@@ -61,9 +60,6 @@ public class Intake extends SubsystemBase {
         switch (currentState) {
             case INTAKING:
                 IntakeMotor.set(Constants.INTAKE_SPEED);
-                break;
-            case EJECTING:
-                IntakeMotor.set(Constants.EJECT_SPEED);
                 break;
             case OFF:
             default:

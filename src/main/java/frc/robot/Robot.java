@@ -6,6 +6,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Arm.ArmState;
@@ -128,14 +129,11 @@ public class Robot extends LoggedRobot {
       }
 
     //Intake Controls
-    boolean runIntakeBack = controller2.getLeftBumper();
-    boolean runIntake = controller2.getRightBumper();
+    boolean runIntake = controller2.getLeftBumper();
     IntakeState currentIntakeState = intakeSubsystem.getIntakeState();
     if (runIntake) {
       intakeSubsystem.setIntakeState(IntakeState.INTAKING);
-    } else if (runIntakeBack) {
-      intakeSubsystem.setIntakeState(IntakeState.EJECTING);
-    } else if (currentIntakeState == IntakeState.INTAKING || currentIntakeState == IntakeState.EJECTING) {
+    } else if (currentIntakeState == IntakeState.INTAKING) {
       intakeSubsystem.setIntakeState(IntakeState.OFF);
     }
 
@@ -143,6 +141,11 @@ public class Robot extends LoggedRobot {
     boolean runShooterMax = controller2.getAButton();
     boolean runShooterMid = controller2.getBButton();
     boolean runShooterLow = controller2.getXButton();
+
+   if (controller2.getAButton()||controller2.getBButton() || controller2.getXButton()) {
+      shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
+    } else shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
+
     ShooterState currentShooterState = shooterSubsystem.getShooterState();
     if (runShooterMax) {
       shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
@@ -173,11 +176,11 @@ public class Robot extends LoggedRobot {
    */
   private double getRotation() {
     double rightX = controller1.getRightX();
-    double deadband = 0.2;
+    double deadband = 0.05;
     if (Math.abs(rightX) < deadband) {
       return 0;
     }
-    return Math.pow(rightX, 3);
+    return Math.pow((1.5*rightX), 3);
   }
 
   /**

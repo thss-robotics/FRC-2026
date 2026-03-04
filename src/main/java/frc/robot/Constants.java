@@ -22,9 +22,9 @@ public class Constants {
     public static final double WHEEL_RADIUS = 0.044;
 
     ///////////// Drivetrain Parameters /////////////
-    public static final double DRIVE_MAX_SPEED = 4; // Maximum speed (m/s)
-    public static final double DRIVE_NORMAL_SPEED = 3; // Nominal operating speed (m/s)
-    public static final double DRIVE_ANGULAR_MAX_SPEED = 5 * Math.PI; // Maximum angular speed (rad/s)
+    public static final double DRIVE_MAX_SPEED = 6; // Maximum speed (m/s)
+    public static final double DRIVE_NORMAL_SPEED = 5; // Nominal operating speed (m/s)
+    public static final double DRIVE_ANGULAR_MAX_SPEED = 8 * Math.PI; // Maximum angular speed (rad/s)
 
     // Module locations relative to the robot's center (in feet)
     public static final double POSITIVE_MODULE_FROM_ROBOT_CENTRE = 1.8; //3.005, to be changed 
@@ -102,8 +102,7 @@ public class Constants {
     
        ///////////// Intake /////////////
     public static final int INTAKE_MOTOR_ID = 7;
-    public static final double INTAKE_SPEED = -0.4;
-    public static final double EJECT_SPEED = 0.4;
+    public static final double INTAKE_SPEED = 0.4;
     
            ///////////// Shooter /////////////
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
@@ -111,7 +110,7 @@ public class Constants {
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.75;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.5;
-    public static final double LOWER_SHOOTER_SPEED = -0.25;
+    public static final double INTAKE_SHOOTER_SPEED = -0.35;
 
     ///////////// Arm, all values to be tested and subject to change /////////////
     public static final int ARM_MOTOR_ID = 6; 

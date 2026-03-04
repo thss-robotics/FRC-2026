@@ -159,8 +159,8 @@ public class Drive extends SubsystemBase {
             ySpeed = 0;
         }
 
-        xSpeed = -xSpeed * 10;
-        ySpeed = -ySpeed * 10;
+        xSpeed = -xSpeed * Constants.DRIVE_MAX_SPEED;
+        ySpeed = -ySpeed * Constants.DRIVE_MAX_SPEED;
         rot = -rot;
 
         // Convert the chassis speeds into individual swerve module states
