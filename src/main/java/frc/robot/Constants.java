@@ -53,8 +53,8 @@ public class Constants {
     public static final double BACK_RIGHT_MOTOR_CHASSIS_ANGULAR_OFFSET = 0;
 
     ///////////// Robot Controls /////////////
-    public static final int XBOX_CONTROLLER_1_PORT = 0;
-    public static final int XBOX_CONTROLLER_2_PORT = 1;
+    public static final int XBOX_CONTROLLER_1_PORT = 1;
+    public static final int XBOX_CONTROLLER_2_PORT = 0;
 
     ///////////// Autonomous Constants /////////////
     public static final class AutoConstants {
@@ -116,8 +116,8 @@ public class Constants {
     ///////////// Arm Constants /////////////
     public static final class ArmConstants {
         // Motor
-        public static final int ARM_MOTOR_ID = 5; 
-        public static final int ARM_FOLOWER_MOTOR_ID = 6; 
+        public static final int ARM_MOTOR_ID = 31; 
+        public static final int ARM_FOLOWER_MOTOR_ID = 32; 
         public static final int ARM_CURRENT_LIMIT = 40; // amps
 
         // Encoder soft limits (relative units from DutyCycleEncoder)
@@ -140,7 +140,7 @@ public class Constants {
         public static final double ARM_DEPLOYED_POSITION = 0.45;
         
         //encoder and safty switches
-        public static final int ARM_ENCODER_PORT = 0;
+        public static final int ARM_ENCODER_PORT = 8;
         public static final int ARM_LIMIT_SWITCH = 5;
 
         // Velocity limits

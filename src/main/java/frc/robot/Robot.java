@@ -8,7 +8,6 @@ import frc.robot.subsystems.Intake.IntakeState;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Arm.ArmState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -68,12 +67,13 @@ public class Robot extends LoggedRobot {
     intakeSubsystem = Intake.getInstance();
     shooterSubsystem = Shooter.getInstance();
     armSubsystem = Arm.getInstance();
+    
   }
 
   @Override
   public void robotPeriodic() {
     // Run the command scheduler
-    // CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
     // intakeSubsystem.outputTelemetry(isDisabled());
     // shooterSubsystem.outputTelemetry(isDisabled());
     // armSubsystem.outputTelemetry(isDisabled());
@@ -118,14 +118,9 @@ public class Robot extends LoggedRobot {
     //Arm Controls (Just a set speed currently, will likely be changed!)
     double armVelocity;
 
-    armVelocity = controller2.getRightY();
-
-      if(!controller2.getRightStickButton()){
-        armSubsystem.armPeriodic(armVelocity);
-      } else {
-        armSubsystem.moveArm(0, true);
-        armSubsystem.stop();
-      }
+    armVelocity = controller2.getLeftY();
+    armSubsystem.moveArm(armVelocity, 0.50);
+ 
 
     //Intake Controls
     boolean runIntakeBack = controller2.getLeftBumper();
