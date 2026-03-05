@@ -54,8 +54,8 @@ public class Constants {
     public static final double BACK_RIGHT_MOTOR_CHASSIS_ANGULAR_OFFSET = 0;
 
     ///////////// Robot Controls /////////////
-    public static final int XBOX_CONTROLLER_1_PORT = 0;
-    public static final int XBOX_CONTROLLER_2_PORT = 1;
+    public static final int XBOX_CONTROLLER_1_PORT = 1;
+    public static final int XBOX_CONTROLLER_2_PORT = 0;
 
    ///////////// Autonomous Constants /////////////
     public static final class AutoConstants {
@@ -137,7 +137,27 @@ public class Constants {
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
     public static final double INTAKE_SHOOTER_SPEED = -0.33;
 
-     ///////////// Arm Constants /////////////
+    
+    // Target RPMs for shooter wheel (positive values). These are sensor units of the
+    // integrated encoder (Neo style) which is in RPM by default. Verify on the robot.
+    public static final double UPPER_SHOOTER_MAX_RPM = 5400.0;
+    public static final double UPPER_SHOOTER_HIGH_RPM = 4800.0;
+    public static final double UPPER_SHOOTER_MID_RPM = 4200.0;
+    public static final double UPPER_SHOOTER_LOW_RPM = 3800.0;
+
+    // Intake shooter wheel (smaller target)
+    public static final double INTAKE_SHOOTER_RPM = 200.0;
+
+    // Shooter PID/velocity control (RPM targets and PID gains)
+    // These values are initial guesses. Tune on the robot.
+    public static final double SHOOTER_KP = 0.00018; // proportional (tune)
+    public static final double SHOOTER_KI = 0.0000008; // integral
+    public static final double SHOOTER_KD = 0.003; // derivative
+    public static final double SHOOTER_KI_ZONE = 150;
+    public static final double SHOOTER_KFF = 1/INTAKE_SHOOTER_RPM;; // feedforward (voltage)
+
+
+    ///////////// Arm Constants /////////////
         // Motors
         public static final int ARM_MOTOR_ID = 31;
         public static final int ARM_FOLOWER_MOTOR_ID = 32;
