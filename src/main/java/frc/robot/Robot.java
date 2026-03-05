@@ -76,7 +76,7 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
-    //limeLight.outputTelemetry();
+    limeLight.outputTelemetry();
     // intakeSubsystem.outputTelemetry(isDisabled());
     shooterSubsystem.outputTelemetry();
     // armSubsystem.outputTelemetry(isDisabled());

@@ -10,7 +10,7 @@
         private static Limelight instance = null;
 
         // Only track these tag IDs
-        private final int[] allowedIDs = {9, 10, 25};
+        private final int[] allowedIDs = {10, 5, 26, 2, 18, 21};
 
         private Limelight() {
             table = NetworkTableInstance.getDefault().getTable("limelight");

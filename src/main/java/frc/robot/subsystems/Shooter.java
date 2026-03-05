@@ -151,12 +151,7 @@ public class Shooter extends SubsystemBase {
          private void updateIntakeShooterMotor() {
         switch (currentIntakeShooterState) {
             case INTAKE_SHOOTING:
-                intakeShooterController.setReference(
-                    Constants.SHOOTER_FEED_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    0.0,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+            IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_SPEED);
                 break;
             case OFF:
             default:
