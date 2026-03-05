@@ -116,8 +116,7 @@ public class Elevator extends SubsystemBase {
    * @param manualInput The manual control value (e.g. from the joystick) to apply.
    */
   public void manualControl(double manualInput) {
-    double manualDeadband = 0;
-    if (Math.abs(manualInput) > manualDeadband) {
+    if (Math.abs(manualInput) > Constants.ELEVATOR_DEADBAND) {
       mPeriodicIO.isElevatorPosControl = false;
       mPeriodicIO.elevatorPower = manualInput;
     }
@@ -137,7 +136,7 @@ public class Elevator extends SubsystemBase {
   public void stop() {
     mPeriodicIO.isElevatorPosControl = false;
     mPeriodicIO.elevatorPower = 0.0;
-    Motor1.set(0.0);
+    Motor1.stopMotor();
   }
 
   /*---------------------------------- Telemetry Output ----------------------------------*/

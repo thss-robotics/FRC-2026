@@ -151,16 +151,16 @@ public class Drive extends SubsystemBase {
 
     public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
         // Reverse controls (rotate 180 degrees)
-        if (Math.abs(xSpeed) < 0.1) {
+        if (Math.abs(xSpeed) < Constants.DRIVE_DEADBAND) {
             xSpeed = 0;
         }
 
-        if (Math.abs(ySpeed) < 0.1) {
+        if (Math.abs(ySpeed) < Constants.DRIVE_DEADBAND) {
             ySpeed = 0;
         }
 
-        xSpeed = -xSpeed * 10;
-        ySpeed = -ySpeed * 10;
+        xSpeed = -xSpeed * Constants.DRIVE_MAX_SPEED;
+        ySpeed = -ySpeed * Constants.DRIVE_MAX_SPEED;
         rot = -rot;
 
         // Convert the chassis speeds into individual swerve module states
@@ -170,7 +170,6 @@ public class Drive extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot);
 
         SwerveModuleState[] swerveModuleStates = kinematics.toSwerveModuleStates(chassisSpeeds);
-        SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, Constants.kMaxSpeed);
 
         // Apply module states
         frontLeftModule.setDesiredState(swerveModuleStates[1]);
