@@ -135,7 +135,7 @@ public class Constants {
     public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
-    public static final double INTAKE_SHOOTER_SPEED = -0.4;
+    public static final double INTAKE_SHOOTER_SPEED = -0.33;
 
      ///////////// Arm Constants /////////////
         // Motors

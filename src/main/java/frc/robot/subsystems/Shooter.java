@@ -8,9 +8,11 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Limelight;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+    private Limelight limeLight; 
     private static Shooter instance = null;
 
     // Motors
@@ -20,6 +22,7 @@ public class Shooter extends SubsystemBase {
     // States
     public enum ShooterState {
         OFF,
+        SHOOTING,
         MAX_SHOOTING,
         HIGH_SHOOTING,
         MID_SHOOTING,
@@ -43,7 +46,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter() {
-
+            limeLight = Limelight.getInstance();
             SparkMaxConfig ShooterConfig = new SparkMaxConfig();
 
         // Attach motors
@@ -51,7 +54,7 @@ public class Shooter extends SubsystemBase {
         UpperShooterMotor.configure(
         ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         IntakeShooterMotor = new SparkMax(Constants.INTAKE_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-        UpperShooterMotor.configure(
+        IntakeShooterMotor.configure(
         ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
@@ -78,8 +81,26 @@ public class Shooter extends SubsystemBase {
         return currentIntakeShooterState;
     }
 
+public double getShooterPower() {
+ double distanceMeters = limeLight.getXYDistance();
+
+    double power =
+        (0.00201463 * distanceMeters * distanceMeters) +
+        (0.0725777 * distanceMeters) +
+        0.437606;
+
+    // clamp to motor limits
+    if (power > 1.0) power = 1.0;
+    if (power < 0.0) power = 0.0;
+
+    return power;
+}
+
     private void updateShooterMotor() {
         switch (currentShooterState) {
+            case SHOOTING:
+                UpperShooterMotor.set(-getShooterPower());
+                break;
             case MAX_SHOOTING:
                 UpperShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
                 break;

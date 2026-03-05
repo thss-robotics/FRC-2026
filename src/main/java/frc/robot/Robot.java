@@ -5,6 +5,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
@@ -17,6 +18,7 @@ import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends LoggedRobot {
   // Joystick input fields
@@ -35,12 +37,15 @@ public class Robot extends LoggedRobot {
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
   private Arm armSubsystem;
+  private Limelight limeLight; 
 
    // Timer-based autonomous state
   private final Timer autoTimer = new Timer();
   /** Current phase: AutoConstants.AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR, AUTO_DONE */
   private int autoPhase = AutoConstants.AUTO_SHOOT;
   private double autoPhaseDuration = 0;
+
+ 
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -59,16 +64,19 @@ public class Robot extends LoggedRobot {
 
     // Instantiate subsystems
     driveSubsystem = Drive.getInstance();
+    limeLight = Limelight.getInstance();
     // elevatorSubsystem = Elevator.getInstance();
     intakeSubsystem = Intake.getInstance();
     shooterSubsystem = Shooter.getInstance();
     armSubsystem = Arm.getInstance();
+
   }
 
   @Override
   public void robotPeriodic() {
     // Run the command scheduler
-    // CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
+    limeLight.outputTelemetry();
     // intakeSubsystem.outputTelemetry(isDisabled());
     // shooterSubsystem.outputTelemetry(isDisabled());
     // armSubsystem.outputTelemetry(isDisabled());
@@ -182,13 +190,19 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     }
 
     //Shooter Controls
+
+    boolean runShooter = controller2.getStartButton();
+    if (runShooter) {
+      shooterSubsystem.setShooterState(ShooterState.SHOOTING);
+    } else shooterSubsystem.setShooterState(ShooterState.OFF);
+
     boolean runShooterMax = controller2.getAButton();
     boolean runShooterHigh = controller2.getBButton();
     boolean runShooterMid = controller2.getXButton();
     boolean runShooterLow = controller2.getYButton();
 
    if (controller2.getAButton()||controller2.getBButton() || 
-   controller2.getXButton() || controller2.getYButton()) {
+   controller2.getXButton() || controller2.getYButton() || controller2.getStartButton()) {
       shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
     } else shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
 
