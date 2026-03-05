@@ -183,21 +183,26 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
 
     //Shooter Controls
     boolean runShooterMax = controller2.getAButton();
-    boolean runShooterMid = controller2.getBButton();
-    boolean runShooterLow = controller2.getXButton();
+    boolean runShooterHigh = controller2.getBButton();
+    boolean runShooterMid = controller2.getXButton();
+    boolean runShooterLow = controller2.getYButton();
 
-   if (controller2.getAButton()||controller2.getBButton() || controller2.getXButton()) {
+   if (controller2.getAButton()||controller2.getBButton() || 
+   controller2.getXButton() || controller2.getYButton()) {
       shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
     } else shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
 
     ShooterState currentShooterState = shooterSubsystem.getShooterState();
     if (runShooterMax) {
       shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
-    } else if (runShooterMid)  {
+    } else if (runShooterHigh)  {
+      shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
+     }else if (runShooterMid)  {
       shooterSubsystem.setShooterState(ShooterState.MID_SHOOTING);
     } else if (runShooterLow)  {
       shooterSubsystem.setShooterState(ShooterState.LOW_SHOOTING);
     } else if (currentShooterState == ShooterState.MAX_SHOOTING || 
+    currentShooterState == ShooterState.HIGH_SHOOTING || 
     currentShooterState == ShooterState.MID_SHOOTING || 
     currentShooterState == ShooterState.LOW_SHOOTING)  {
     shooterSubsystem.setShooterState(ShooterState.OFF);

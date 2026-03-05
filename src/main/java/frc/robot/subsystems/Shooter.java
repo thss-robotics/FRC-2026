@@ -21,6 +21,7 @@ public class Shooter extends SubsystemBase {
     public enum ShooterState {
         OFF,
         MAX_SHOOTING,
+        HIGH_SHOOTING,
         MID_SHOOTING,
         LOW_SHOOTING,
     }
@@ -49,7 +50,7 @@ public class Shooter extends SubsystemBase {
         UpperShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
         UpperShooterMotor.configure(
         ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        IntakeShooterMotor = new SparkMax(Constants.LOWER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        IntakeShooterMotor = new SparkMax(Constants.INTAKE_SHOOTER_MOTOR_ID, MotorType.kBrushless);
         UpperShooterMotor.configure(
         ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
@@ -81,6 +82,9 @@ public class Shooter extends SubsystemBase {
         switch (currentShooterState) {
             case MAX_SHOOTING:
                 UpperShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
+                break;
+            case HIGH_SHOOTING:
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_HIGH_SPEED);
                 break;
             case MID_SHOOTING:
                 UpperShooterMotor.set(Constants.UPPER_SHOOTER_MID_SPEED);

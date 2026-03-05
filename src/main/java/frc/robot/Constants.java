@@ -130,14 +130,14 @@ public class Constants {
     
            ///////////// Shooter /////////////
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
-    public static final int LOWER_SHOOTER_MOTOR_ID = 9;
+    public static final int INTAKE_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
-    public static final double UPPER_SHOOTER_MID_SPEED = -0.75;
-    public static final double UPPER_SHOOTER_LOW_SPEED = -0.5;
+    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;
+    public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
+    public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
     public static final double INTAKE_SHOOTER_SPEED = -0.4;
 
      ///////////// Arm Constants /////////////
-     /// 
         // Motors
         public static final int ARM_MOTOR_ID = 31;
         public static final int ARM_FOLOWER_MOTOR_ID = 32;
