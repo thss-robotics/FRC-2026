@@ -80,19 +80,19 @@ public class Constants {
         public static final int AUTO_SHOOT = 0;
         public static final int AUTO_STRAFE = 1;
         public static final int AUTO_FORWARD = 2;
-        public static final int AUTO_ELEVATOR = 4;
-        public static final int AUTO_DONE = 3;
+        public static final int AUTO_BACK = 3;
+        public static final int AUTO_DONE = 4;
 
         /** Duration in seconds per phase. Index by AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR. */
         public static final double[] AUTO_PHASE_DURATION_SEC = {
-            2.0,  // AUTO_SHOOT: 3–5 s
-            3.0,  // AUTO_STRAFE: 2–4 s (centre to left/right of tower)
-            2.0,  // AUTO_FORWARD: 5–7 s (in line with tower)
-            2.0   // AUTO_ELEVATOR
+            1.0,  // AUTO_SHOOT: 3–5 s
+            1.5,  // AUTO_STRAFE: 2–4 s (centre to left/right of tower)
+            1.0,  // AUTO_FORWARD: 5–7 s (in line with tower)
+            1.0   // AUTO_BACK
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
-        public static final double AUTO_DRIVE_SPEED = 0.35;
+        public static final double AUTO_DRIVE_SPEED = 0.5;
     }
 
         ///////////// Elevator (Values To Be Tested) /////////////
@@ -135,7 +135,7 @@ public class Constants {
     public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
-    public static final double INTAKE_SHOOTER_SPEED = 0.35;
+    public static final double INTAKE_SHOOTER_SPEED = 0.4;
 
     
     // Target RPMs for shooter wheel (positive values). These are sensor units of the

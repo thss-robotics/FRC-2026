@@ -108,21 +108,20 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
       autoTimer.reset();
       autoTimer.start();
       autoPhase++;
+      
       if (autoPhase > AutoConstants.AUTO_DONE) {
         autoPhase = AutoConstants.AUTO_DONE;
       }
-      if (autoPhase >= AutoConstants.AUTO_STRAFE) {
-        autoPhase = AutoConstants.AUTO_STRAFE;
-      }
-      if (autoPhase >= AutoConstants.AUTO_FORWARD) {
-        autoPhase = AutoConstants.AUTO_FORWARD;
+
+      if (autoPhase < AutoConstants.AUTO_DONE && autoPhase < AutoConstants.AUTO_PHASE_DURATION_SEC.length) {
+        autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[autoPhase];
       }
     }
 
     switch (autoPhase) {
       case AutoConstants.AUTO_SHOOT:
-    shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
     shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
+    shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
         break;
       case AutoConstants.AUTO_STRAFE:
     shooterSubsystem.setShooterState(ShooterState.OFF);
@@ -131,6 +130,9 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
         break;
       case AutoConstants.AUTO_FORWARD:
         driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
+        break;
+        case AutoConstants.AUTO_BACK:
+        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
         break;
       case AutoConstants.AUTO_DONE:
       default:
