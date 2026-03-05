@@ -41,8 +41,6 @@ public class Shooter extends SubsystemBase {
 
     private ShooterState currentShooterState = ShooterState.OFF;
     private IntakeShooterState currentIntakeShooterState = IntakeShooterState.OFF;
-    
-    public Boolean ShooterRunning = true;
 
     public static Shooter getInstance() {
         if (instance == null) {
@@ -74,10 +72,19 @@ public class Shooter extends SubsystemBase {
         intakeShooterController = IntakeShooterMotor.getClosedLoopController();
     }
 
-    public void ShooterPeriodic(){
+    @Override
+    public void periodic() {
+        updateShooterMotor();
+        updateIntakeShooterMotor();
+    }
+
+    /** @deprecated Updates run automatically in {@link #periodic()}. Kept for compatibility. */
+    public void ShooterPeriodic() {
         updateShooterMotor();
     }
-        public void IntakeShooterPeriodic(){
+
+    /** @deprecated Updates run automatically in {@link #periodic()}. Kept for compatibility. */
+    public void IntakeShooterPeriodic() {
         updateIntakeShooterMotor();
     }
 

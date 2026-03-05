@@ -154,7 +154,7 @@ public class Constants {
     public static final double SHOOTER_FEED_KI = 0.000002; // integral
     public static final double SHOOTER_FEED_KD = 0.003; // derivative
     public static final double SHOOTER_FEED_KI_ZONE = 150;
-    public static final double SHOOTER_FEED_KFF = 1/SHOOTER_FEED_RPM;; // feedforward (voltage)
+    public static final double SHOOTER_FEED_KFF = 1/SHOOTER_FEED_RPM; // feedforward (voltage)
 
     ///////////// Arm Constants /////////////
         // Motors
