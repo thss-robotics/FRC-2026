@@ -44,7 +44,13 @@ public class Intake extends SubsystemBase {
         intakeConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void intakePeriodic(){
+    @Override
+    public void periodic() {
+        updateMotor();
+    }
+
+    /** @deprecated Updates run automatically in {@link #periodic()}. Kept for compatibility. */
+    public void intakePeriodic() {
         updateMotor();
     }
 
