@@ -82,7 +82,7 @@ public class Shooter extends SubsystemBase {
     }
 
 public double getShooterPower() {
- double distanceMeters = limeLight.getXYDistance();
+ double distanceMeters = limeLight.getXYDistance() - 0.025;
 
     double power =
         (0.00201463 * distanceMeters * distanceMeters) +
