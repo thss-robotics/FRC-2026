@@ -5,6 +5,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
@@ -46,6 +47,8 @@ public class Robot extends LoggedRobot {
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
   private Arm armSubsystem;
+
+  private Limelight limelight;
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -64,6 +67,7 @@ public class Robot extends LoggedRobot {
 
     // Instantiate subsystems
     driveSubsystem = Drive.getInstance();
+    limelight = Limelight.getInstance();
     // elevatorSubsystem = Elevator.getInstance();
     intakeSubsystem = Intake.getInstance();
     shooterSubsystem = Shooter.getInstance();
@@ -73,7 +77,8 @@ public class Robot extends LoggedRobot {
   @Override
   public void robotPeriodic() {
     // Run the command scheduler
-    // CommandScheduler.getInstance().run();
+    CommandScheduler.getInstance().run();
+    limelight.outputTelemetry();
     // intakeSubsystem.outputTelemetry(isDisabled());
     // shooterSubsystem.outputTelemetry(isDisabled());
     // armSubsystem.outputTelemetry(isDisabled());
