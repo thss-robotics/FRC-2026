@@ -42,6 +42,9 @@ public class Shooter extends SubsystemBase {
     private ShooterState currentShooterState = ShooterState.OFF;
     private IntakeShooterState currentIntakeShooterState = IntakeShooterState.OFF;
 
+    /** Last power computed when a target was visible; used when target is lost. */
+    private double lastShooterPower = 0.0;
+
     public static Shooter getInstance() {
         if (instance == null) {
             instance = new Shooter();
@@ -104,19 +107,23 @@ public class Shooter extends SubsystemBase {
         return currentIntakeShooterState;
     }
 
-public double getShooterPower() {
- double distanceMeters = limeLight.getXYDistance() - 0.025;
+    public double getShooterPower() {
+        if (!limeLight.hasAllowedTarget()) {
+            return lastShooterPower;
+        }
+        double distanceMeters = limeLight.getXYDistance() - 0.025;
 
-    double power =
-        (0.00201463 * distanceMeters * distanceMeters) +
-        (0.0725777 * distanceMeters) +
-        0.437606;
+        double power =
+            (0.00201463 * distanceMeters * distanceMeters) +
+            (0.0725777 * distanceMeters) +
+            0.437606;
 
-    // clamp to motor limits
-    if (power > 1.0) power = 1.0;
-    if (power < 0.0) power = 0.0;
-    return power;
-}
+        // clamp to motor limits
+        if (power > 1.0) power = 1.0;
+        if (power < 0.0) power = 0.0;
+        lastShooterPower = power;
+        return power;
+    }
 
      private void updateShooterMotor() {
         switch (currentShooterState) {
