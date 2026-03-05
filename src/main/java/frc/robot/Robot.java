@@ -78,7 +78,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
     limeLight.outputTelemetry();
     // intakeSubsystem.outputTelemetry(isDisabled());
-    shooterSubsystem.outputTelemetry();
+    //shooterSubsystem.outputTelemetry();
     // armSubsystem.outputTelemetry(isDisabled());
   }
 

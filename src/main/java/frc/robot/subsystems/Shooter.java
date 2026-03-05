@@ -3,9 +3,6 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig; 
 
@@ -19,11 +16,8 @@ public class Shooter extends SubsystemBase {
     private static Shooter instance = null;
 
     // Motors
- public final SparkMax ShooterMotor;
+ public final SparkMax UpperShooterMotor;
  public final SparkMax IntakeShooterMotor;
-    // Closed-loop controllers
-    private SparkClosedLoopController ShooterController;
-    private SparkClosedLoopController intakeShooterController;
 
     // States
     public enum ShooterState {
@@ -53,31 +47,15 @@ public class Shooter extends SubsystemBase {
 
     private Shooter() {
             limeLight = Limelight.getInstance();
-            // Create two configs: one for the upper (main) shooter, one for the intake/feed shooter
-            SparkMaxConfig shooterConfig = new SparkMaxConfig();
-            shooterConfig.closedLoop
-                .pid(Constants.SHOOTER_KP, Constants.SHOOTER_KI, Constants.SHOOTER_KD)
-                .iZone(Constants.SHOOTER_KI_ZONE);
-
-            SparkMaxConfig feedConfig = new SparkMaxConfig();
-            feedConfig.closedLoop
-                .pid(Constants.SHOOTER_FEED_KP, Constants.SHOOTER_FEED_KI, Constants.SHOOTER_FEED_KD)
-                .iZone(Constants.SHOOTER_FEED_KI_ZONE);
+            SparkMaxConfig ShooterConfig = new SparkMaxConfig();
 
         // Attach motors
-        ShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-        ShooterMotor.configure(
-        shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        // Invert main shooter motor
-        ShooterMotor.setInverted(true);
-        ShooterController = ShooterMotor.getClosedLoopController();
-
+        UpperShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        UpperShooterMotor.configure(
+        ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         IntakeShooterMotor = new SparkMax(Constants.INTAKE_SHOOTER_MOTOR_ID, MotorType.kBrushless);
         IntakeShooterMotor.configure(
-        feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        // Invert intake/feed shooter motor
-        IntakeShooterMotor.setInverted(true);
-        intakeShooterController = IntakeShooterMotor.getClosedLoopController();
+        ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void ShooterPeriodic(){
@@ -115,70 +93,36 @@ public double getShooterPower() {
     if (power > 1.0) power = 1.0;
     if (power < 0.0) power = 0.0;
 
-    // Convert relative power [0..1] to RPM target using configured max RPM
-    double rpm = power * Constants.UPPER_SHOOTER_MAX_RPM;
-    return rpm;
+    return power;
 }
 
     private void updateShooterMotor() {
         switch (currentShooterState) {
             case SHOOTING:
-                // Dynamic setpoint based on Limelight distance. getShooterPower() returns an RPM target.
-                double rpmTarget = getShooterPower();
-                ShooterController.setReference(
-                    rpmTarget,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    Constants.SHOOTER_KFF,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                UpperShooterMotor.set(-getShooterPower());
                 break;
             case MAX_SHOOTING:
-                ShooterController.setReference(
-                    Constants.UPPER_SHOOTER_MAX_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    Constants.SHOOTER_KFF,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
                 break;
             case HIGH_SHOOTING:
-                ShooterController.setReference(
-                    Constants.UPPER_SHOOTER_HIGH_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    Constants.SHOOTER_KFF,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_HIGH_SPEED);
                 break;
             case MID_SHOOTING:
-                ShooterController.setReference(
-                    Constants.UPPER_SHOOTER_MID_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    Constants.SHOOTER_KFF,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MID_SPEED);
                 break;
             case LOW_SHOOTING:
-                ShooterController.setReference(
-                    Constants.UPPER_SHOOTER_LOW_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    Constants.SHOOTER_KFF,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                UpperShooterMotor.set(Constants.UPPER_SHOOTER_LOW_SPEED);
                 break;
             case OFF:
             default:
-                ShooterMotor.stopMotor();
+                UpperShooterMotor.stopMotor();
                 break;
         }
     }
          private void updateIntakeShooterMotor() {
         switch (currentIntakeShooterState) {
             case INTAKE_SHOOTING:
-                intakeShooterController.setReference(
-                    Constants.SHOOTER_FEED_RPM,
-                    ControlType.kVelocity,
-                    ClosedLoopSlot.kSlot0,
-                    0.0,
-                    SparkClosedLoopController.ArbFFUnits.kVoltage);
+                IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_SPEED);
                 break;
             case OFF:
             default:
@@ -188,23 +132,8 @@ public double getShooterPower() {
     }
 
     // LOGGING
-    public void outputTelemetry() {
-        
-        // Report encoder velocity (RPM) and current
-        try {
-            double upperRPM = ShooterMotor.getEncoder().getVelocity();
-            SmartDashboard.putNumber("Shooter RPM", upperRPM);
-        } catch (Exception e) {
-            SmartDashboard.putString("Shooter RPM", "encoder-unavailable");
-        }
-        SmartDashboard.putNumber("Shooter Current", ShooterMotor.getOutputCurrent());
-
-        try {
-            double upperRPM = IntakeShooterMotor.getEncoder().getVelocity();
-            SmartDashboard.putNumber("Feed RPM", upperRPM);
-        } catch (Exception e) {
-            SmartDashboard.putString("Feed RPM", "encoder-unavailable");
-        }
-        SmartDashboard.putNumber("Feed Current", IntakeShooterMotor.getOutputCurrent());
+    public void outputTelemetry(boolean isRobotDisabled) {
+        SmartDashboard.putNumber("Shooter Speed", UpperShooterMotor.get() * 100);
+        SmartDashboard.putNumber("Shooter Current", UpperShooterMotor.getOutputCurrent());
     }
 }
