@@ -19,9 +19,9 @@ public final class MotorConfigs {
 
                         double TURNING_FACTOR = 2 * Math.PI;
                         // ===== Aggressive PID Tuning for Faster Response ===== //
-                        double DRIVE_KP = 0.5; // 0.05; // High P for fast and responsive driving
+                        double DRIVE_KP = 0.35; // 0.05; // High P for fast and responsive driving
                         double DRIVE_KI = 0.0; // 0.0;
-                        double DRIVE_KD = 0.01; // 0.01; // Increased D to reduce overshoot
+                        double DRIVE_KD = 0.013; // 0.01; // Increased D to reduce overshoot
 
                         double TURN_KP = 2.0; // 2.0; // Increased P for sharper, faster turns
                         double TURN_KI = 0.0003; // 0.0003; // Keep I small to prevent drift

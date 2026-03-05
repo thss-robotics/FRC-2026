@@ -66,17 +66,9 @@ public class Arm extends SubsystemBase {
 
     public void outputTelemetry(boolean isRobotDisabled) {
 
-        boolean connected = armEncoder.isConnected();
-
-        // Raw 0–1 rotation
-        double rawPosition = armEncoder.get();
-
-        // Convert to radians
-        double positionRadians = rawPosition * (2.0 * Math.PI);
-
-        SmartDashboard.putBoolean("Arm Encoder Connected", connected);
-        SmartDashboard.putNumber("Arm Encoder Raw", rawPosition);
-        SmartDashboard.putNumber("Arm Position Radians", positionRadians);
+        SmartDashboard.putBoolean("Arm Encoder Connected", armEncoder.isConnected());
+        SmartDashboard.putNumber("Arm Encoder Raw", armEncoder.get());
+        SmartDashboard.putNumber("Arm Position Radians", (armEncoder.get() * (2.0 * Math.PI)));
     }
 }
 

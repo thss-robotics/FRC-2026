@@ -107,9 +107,8 @@ public class Shooter extends SubsystemBase {
     }
 
     // LOGGING
-    // public void outputTelemetry(boolean isRobotDisabled) {
-    //     SmartDashboard.putNumber("Shooter Speed", UpperShooterMotor.get() * 100);
-    //     SmartDashboard.putNumber("Shooter Current", UpperShooterMotor.getOutputCurrent());
-    //     SmartDashboard.putString("Shooter State", currentState.toString());
-    // }
+    public void outputTelemetry(boolean isRobotDisabled) {
+        SmartDashboard.putNumber("Shooter Speed", UpperShooterMotor.get() * 100);
+        SmartDashboard.putNumber("Shooter Current", UpperShooterMotor.getOutputCurrent());
+    }
 }

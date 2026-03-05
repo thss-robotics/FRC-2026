@@ -20,6 +20,7 @@ public class Intake extends SubsystemBase {
     public enum IntakeState {
         OFF,
         INTAKING,
+        EJECTING,
     }
 
     private IntakeState currentState = IntakeState.OFF;
@@ -61,6 +62,9 @@ public class Intake extends SubsystemBase {
             case INTAKING:
                 IntakeMotor.set(Constants.INTAKE_SPEED);
                 break;
+                case EJECTING:
+                IntakeMotor.set(Constants.EJECT_SPEED);
+                break;
             case OFF:
             default:
                 IntakeMotor.stopMotor();
@@ -69,10 +73,10 @@ public class Intake extends SubsystemBase {
     }
 
      // LOGGING
-    // public void outputTelemetry(boolean isRobotDisabled) {
-    //     // SmartDashboard.putBoolean("Is Intaking", intakeSensor.get());
-    //     SmartDashboard.putNumber("Intake Speed", IntakeMotor.get() * 100);
-    //     SmartDashboard.putNumber("Intake Current", IntakeMotor.getOutputCurrent());
-    //     SmartDashboard.putString("Intake State", currentState.toString());
-    // }
+    public void outputTelemetry(boolean isRobotDisabled) {
+        // SmartDashboard.putBoolean("Is Intaking", intakeSensor.get());
+        SmartDashboard.putNumber("Intake Speed", IntakeMotor.get() * 100);
+        SmartDashboard.putNumber("Intake Current", IntakeMotor.getOutputCurrent());
+        SmartDashboard.putString("Intake State", currentState.toString());
+    }
 }
