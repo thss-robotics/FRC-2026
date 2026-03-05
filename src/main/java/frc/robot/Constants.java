@@ -146,16 +146,22 @@ public class Constants {
     public static final double UPPER_SHOOTER_LOW_RPM = 3800.0;
 
     // Intake shooter wheel (smaller target)
-    public static final double INTAKE_SHOOTER_RPM = 200.0;
+    public static final double SHOOTER_FEED_RPM = 350.0;
 
     // Shooter PID/velocity control (RPM targets and PID gains)
     // These values are initial guesses. Tune on the robot.
+    public static final double SHOOTER_FEED_KP = 0.00018; // proportional (tune)
+    public static final double SHOOTER_FEED_KI = 0.0000008; // integral
+    public static final double SHOOTER_FEED_KD = 0.003; // derivative
+    public static final double SHOOTER_FEED_KI_ZONE = 150;
+    public static final double SHOOTER_FEED_KFF = 1/SHOOTER_FEED_RPM;; // feedforward (voltage)
+
+    
     public static final double SHOOTER_KP = 0.00018; // proportional (tune)
     public static final double SHOOTER_KI = 0.0000008; // integral
     public static final double SHOOTER_KD = 0.003; // derivative
     public static final double SHOOTER_KI_ZONE = 150;
-    public static final double SHOOTER_KFF = 1/INTAKE_SHOOTER_RPM;; // feedforward (voltage)
-
+    public static final double SHOOTER_KFF = 1/SHOOTER_FEED_RPM;; // feedforward (voltage)
 
     ///////////// Arm Constants /////////////
         // Motors

@@ -34,13 +34,10 @@ public class Arm extends SubsystemBase {
 
         armMotor = new SparkMax(Constants.ARM_MOTOR_ID, MotorType.kBrushed);
         armMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    // Invert motor direction
-    armMotor.setInverted(true);
 
         armFollowerMotor = new SparkMax(Constants.ARM_FOLOWER_MOTOR_ID, MotorType.kBrushed);
         armFollowerMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    // Invert follower direction
-    armFollowerMotor.setInverted(true);
+    // follower/arm inversion left default (adjust in hardware if needed)
 
         // DIO port (change if needed)
         armEncoder = new DutyCycleEncoder(Constants.ARM_ENCODER_PORT);
