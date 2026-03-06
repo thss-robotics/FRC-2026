@@ -136,7 +136,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
         break;
         case AutoConstants.AUTO_TAKE_2:
         armSubsystem.stop();
-        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, -AutoConstants.AUTO_DRIVE_SPEED/1.3, 0, true);
+        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, -AutoConstants.AUTO_DRIVE_SPEED/2, 0, true);
         intakeSubsystem.setIntakeState(IntakeState.INTAKING);
         break;
         case AutoConstants.AUTO_BACK_TO_ALLIANCE:
@@ -222,11 +222,18 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     } else shooterSubsystem.setShooterState(ShooterState.OFF);
 
     boolean runShooterMax = controller2.getAButton();
+    boolean runIntakeShooter = controller2.getPOV() >= 0 && controller2.getPOV() <= 45 || controller2.getPOV() == 315;
+    boolean runIntakeShooterFast = controller2.getPOV() >= 135 && controller2.getPOV() <= 225;
 
-   if (controller2.getAButton() || controller2.getYButton()) {
+    IntakeShooterState currentIntakeShooterState = shooterSubsystem.getIntakeShooterState();
+   if (runIntakeShooter) {
       shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
-    } else shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-
+    } else if (runIntakeShooterFast) {
+      shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_FAST_SHOOTING);
+    } else if (currentIntakeShooterState == IntakeShooterState.INTAKE_SHOOTING || 
+    currentIntakeShooterState == IntakeShooterState.INTAKE_FAST_SHOOTING) {
+      shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
+    }
     ShooterState currentShooterState = shooterSubsystem.getShooterState();
     if (runShooterMax) {
       shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
@@ -236,17 +243,6 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     currentShooterState == ShooterState.LOW_SHOOTING)  {
     shooterSubsystem.setShooterState(ShooterState.OFF);
     }
-
-     //Elevator Controls
-    //  if (controller2.getRightY() <= 0) {
-    //   elevatorSubsystem.direction = Constants.UP_AMOUNT;
-    //   elevatorSubsystem.manualControl(controller2.getRightY() / Constants.ELEVATOR_UP_FORCE_REDUCTOR);
-    // }
-    // else { 
-    //   elevatorSubsystem.direction = Constants.DOWN_AMOUNT;
-    //   elevatorSubsystem.manualControl(controller.getRightY() / Constants.ELEVATOR_DOWN_FORCE_REDUCTOR);
-    // }
-    // elevatorSubsystem.periodic();
   }
 
   /**

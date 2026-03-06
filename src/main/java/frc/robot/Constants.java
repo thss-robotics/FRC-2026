@@ -144,10 +144,11 @@ public class Constants {
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
     public static final int INTAKE_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
-    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;
+    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;    
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
     public static final double INTAKE_SHOOTER_SPEED = 0.33;
+    public static final double INTAKE_SHOOTER_FAST_SPEED = 0.45;
 
     
     // Target RPMs for shooter wheel (positive values). These are sensor units of the

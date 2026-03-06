@@ -36,7 +36,8 @@ public class Shooter extends SubsystemBase {
     }
         public enum IntakeShooterState {
         OFF,
-        INTAKE_SHOOTING
+        INTAKE_SHOOTING,
+        INTAKE_FAST_SHOOTING
     }
 
     private ShooterState currentShooterState = ShooterState.OFF;
@@ -115,8 +116,8 @@ public class Shooter extends SubsystemBase {
 
         double power =
             (0.00201463 * distanceMeters * distanceMeters) +
-            (0.0725777 * distanceMeters) +
-            0.382606;
+            (0.0725775 * distanceMeters) +
+            0.363606;
 
         // clamp to motor limits
         if (power > 1.0) power = 1.0;
@@ -152,6 +153,9 @@ public class Shooter extends SubsystemBase {
         switch (currentIntakeShooterState) {
             case INTAKE_SHOOTING:
             IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_SPEED);
+                break;
+                case INTAKE_FAST_SHOOTING:
+            IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_FAST_SPEED);
                 break;
             case OFF:
             default:
