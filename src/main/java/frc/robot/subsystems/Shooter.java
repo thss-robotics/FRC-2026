@@ -116,7 +116,7 @@ public class Shooter extends SubsystemBase {
         double power =
             (0.00201463 * distanceMeters * distanceMeters) +
             (0.0725777 * distanceMeters) +
-            0.437606;
+            0.397606;
 
         // clamp to motor limits
         if (power > 1.0) power = 1.0;

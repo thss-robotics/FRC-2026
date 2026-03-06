@@ -77,22 +77,30 @@ public class Constants {
         public static final boolean AUTO_ENABLED = true;
 
         // Timer-based autonomous phase indices
-        public static final int AUTO_SHOOT = 0;
-        public static final int AUTO_STRAFE = 1;
-        public static final int AUTO_FORWARD = 2;
-        public static final int AUTO_BACK = 3;
-        public static final int AUTO_DONE = 4;
+        public static final int AUTO_BACK = 0;
+        public static final int AUTO_SHOOT = 1;
+        public static final int AUTO_STRAFE = 2;
+        public static final int AUTO_FORWARD = 3;
+        public static final int AUTO_TAKE_1 = 4;
+        public static final int AUTO_TAKE_2 = 5;
+        public static final int AUTO_BACK_TO_TRENCH = 6;
+        public static final int AUTO_BACK_TO_ALLIANCE = 7;
+        public static final int AUTO_BACK_TO_TOWER = 8;
+        public static final int AUTO_DONE = 6;
 
         /** Duration in seconds per phase. Index by AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR. */
         public static final double[] AUTO_PHASE_DURATION_SEC = {
-            1.0,  // AUTO_SHOOT: 3–5 s
-            1.5,  // AUTO_STRAFE: 2–4 s (centre to left/right of tower)
-            1.0,  // AUTO_FORWARD: 5–7 s (in line with tower)
-            1.0   // AUTO_BACK
+            1.0,
+            3.5,
+            1.5,
+            1.8,
+            0.8,
+            1.7
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
-        public static final double AUTO_DRIVE_SPEED = 0.5;
+        public static final double AUTO_DRIVE_SPEED = 1.0;
+        public static final double AUTO_TURN_SPEED = 0.1;
     }
 
         ///////////// Elevator (Values To Be Tested) /////////////
