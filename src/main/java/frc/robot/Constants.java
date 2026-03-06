@@ -3,17 +3,6 @@ package frc.robot;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Constants {
-    public static final Alliance ALLIANCE = Alliance.BLUE;
-
-    public enum Alliance {
-        BLUE,
-        RED
-    }
-
-    /** +1 for Blue, -1 for Red. */
-    public static double allianceDriveSign() {
-        return ALLIANCE == Alliance.BLUE ? 1 : -1;
-    }
 
     ///////////// Swerve Module Configuration /////////////
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
@@ -107,14 +96,14 @@ public class Constants {
             1.5,
             3.0,
             0.8,
-            3.0,
+            3.2,
+            1.15,
             1.5,
-            1.5,
-            4.2,
+            4.35,
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
-        public static final double AUTO_DRIVE_SPEED = 1.0;
+        public static final double AUTO_DRIVE_SPEED = 0.05;
         public static final double AUTO_TURN_SPEED = -0.1;
     }
     

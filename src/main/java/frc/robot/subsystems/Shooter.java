@@ -112,12 +112,12 @@ public class Shooter extends SubsystemBase {
         if (!limeLight.hasAllowedTarget()) {
             return lastShooterPower;
         }
-        double distanceMeters = limeLight.getXYDistance() - 0.01;
+        double distanceMeters = limeLight.getXYDistance() - 0.025;
 
         double power =
             (0.00201463 * distanceMeters * distanceMeters) +
-            (0.0725775 * distanceMeters) +
-            0.363606;
+            (0.0725777 * distanceMeters) +
+            0.382605;
 
         // clamp to motor limits
         if (power > 1.0) power = 1.0;

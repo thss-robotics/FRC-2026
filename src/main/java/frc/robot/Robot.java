@@ -113,10 +113,9 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
       }
     }
 
-    double sign = Constants.allianceDriveSign();
     switch (autoPhase) {
     case AutoConstants.AUTO_BACK:
-    driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED, 0, sign * 0.1, true);
+    driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0,  0.1, true);
         break;
       case AutoConstants.AUTO_SHOOT:
         driveSubsystem.drive(0, 0, 0, true);
@@ -126,28 +125,28 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
       case AutoConstants.AUTO_STRAFE:
     shooterSubsystem.setShooterState(ShooterState.OFF);
     shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-        driveSubsystem.drive(0, sign * AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
         break;
       case AutoConstants.AUTO_FORWARD:
-        driveSubsystem.drive(sign * AutoConstants.AUTO_DRIVE_SPEED, 0, sign * AutoConstants.AUTO_TURN_SPEED, true);
+        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, AutoConstants.AUTO_TURN_SPEED, true);
         break;
         case AutoConstants.AUTO_TAKE_1:
-        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED/1.5, sign * -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/1.5, -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
         armSubsystem.moveArm(-1, 0.5);
         break;
         case AutoConstants.AUTO_TAKE_2:
         armSubsystem.stop();
-        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED/2.5, sign * -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
         intakeSubsystem.setIntakeState(IntakeState.INTAKING);
         break;
         case AutoConstants.AUTO_BACK_TO_ALLIANCE:
-        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED, 0, sign * AutoConstants.AUTO_TURN_SPEED*2, true);
+        driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
         intakeSubsystem.setIntakeState(IntakeState.OFF);
         armSubsystem.moveArm(0.4, 0.5);
         break;
         case AutoConstants.AUTO_BACK_TO_TOWER:
         armSubsystem.stop();
-        driveSubsystem.drive(0, sign * AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*4, true);
         break;
         case AutoConstants.AUTO_SHOOT_2:
         driveSubsystem.drive(0, 0, 0, true);
@@ -183,9 +182,9 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
 
     //Use for blue alliance
     double sign = Constants.allianceDriveSign();
-    xSpeed = sign * forward;
-    ySpeed = sign * strafe;
-    rotation = sign * getRotation();
+    xSpeed =   forward;
+    ySpeed =   strafe;
+    rotation =   getRotation();
 
  // Command the drive subsystem directly.
     if (!controller1.getYButton()) {
