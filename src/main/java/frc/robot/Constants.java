@@ -3,6 +3,18 @@ package frc.robot;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
 public class Constants {
+    public static final Alliance ALLIANCE = Alliance.BLUE;
+
+    public enum Alliance {
+        BLUE,
+        RED
+    }
+
+    /** +1 for Blue, -1 for Red. */
+    public static double allianceDriveSign() {
+        return ALLIANCE == Alliance.BLUE ? 1 : -1;
+    }
+
     ///////////// Swerve Module Configuration /////////////
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
     // More teeth will result in a faster robot.
