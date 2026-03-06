@@ -4,8 +4,9 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.SparkMaxConfig; 
+import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -20,6 +21,7 @@ public class Intake extends SubsystemBase {
     public enum IntakeState {
         OFF,
         INTAKING,
+        MAX_INTAKING,
         EJECTING,
     }
 
@@ -65,8 +67,11 @@ public class Intake extends SubsystemBase {
 
     private void updateMotor() {
         switch (currentState) {
-            case INTAKING:
+                case INTAKING:
                 IntakeMotor.set(Constants.INTAKE_SPEED);
+                break;
+                case MAX_INTAKING:
+                IntakeMotor.set(Constants.MAX_INTAKE_SPEED);
                 break;
                 case EJECTING:
                 IntakeMotor.set(Constants.EJECT_SPEED);

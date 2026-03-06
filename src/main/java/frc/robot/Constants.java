@@ -83,19 +83,22 @@ public class Constants {
         public static final int AUTO_FORWARD = 3;
         public static final int AUTO_TAKE_1 = 4;
         public static final int AUTO_TAKE_2 = 5;
-        public static final int AUTO_BACK_TO_TRENCH = 6;
-        public static final int AUTO_BACK_TO_ALLIANCE = 7;
-        public static final int AUTO_BACK_TO_TOWER = 8;
-        public static final int AUTO_DONE = 6;
+        public static final int AUTO_BACK_TO_ALLIANCE = 6;
+        public static final int AUTO_BACK_TO_TOWER = 7;
+        public static final int AUTO_SHOOT_2 = 8;
+        public static final int AUTO_DONE = 9;
 
         /** Duration in seconds per phase. Index by AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR. */
         public static final double[] AUTO_PHASE_DURATION_SEC = {
             1.0,
             3.5,
             1.5,
-            1.8,
+            3.0,
             0.8,
-            1.7
+            3.0,
+            1.5,
+            1.5,
+            4.2,
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
@@ -134,6 +137,7 @@ public class Constants {
        ///////////// Intake /////////////
     public static final int INTAKE_MOTOR_ID = 7;
     public static final double INTAKE_SPEED = 0.5;
+    public static final double MAX_INTAKE_SPEED = 1.0;
     public static final double EJECT_SPEED = -1.0;
     
            ///////////// Shooter /////////////
@@ -143,7 +147,7 @@ public class Constants {
     public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
-    public static final double INTAKE_SHOOTER_SPEED = 0.4;
+    public static final double INTAKE_SHOOTER_SPEED = 0.33;
 
     
     // Target RPMs for shooter wheel (positive values). These are sensor units of the
