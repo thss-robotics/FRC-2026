@@ -112,7 +112,7 @@ public class Shooter extends SubsystemBase {
         if (!limeLight.hasAllowedTarget()) {
             return lastShooterPower;
         }
-        double distanceMeters = limeLight.getXYDistance() - 0.025;
+        double distanceMeters = limeLight.getXYDistance() - 0.01;
 
         double power =
             (0.00201463 * distanceMeters * distanceMeters) +

@@ -117,34 +117,6 @@ public class Constants {
         public static final double AUTO_DRIVE_SPEED = 1.0;
         public static final double AUTO_TURN_SPEED = -0.1;
     }
-
-        ///////////// Elevator (Values To Be Tested) /////////////
-    
-    public static final int UP_AMOUNT = -1;
-    public static final int DOWN_AMOUNT = 1;
-    public static final int STOP_AMOUNT = 0;
-
-    public static final double VOLTAGE_OFFSET = -0.13;
-
-    public static final int UP_SPEED = 3;
-    public static final int DOWN_SPEED = 6;
-
-    public static final int ELEVATOR_MOTOR_1_ID = 15; 
-    public static final int ELEVATOR_MOTOR_2_ID = 16; 
-    
-    public static final double ELEVATOR_KP = 0.01;
-    public static final double ELEVATOR_KI = 0.0;
-    public static final double ELEVATOR_KD = 0.0;
-    public static final double ELEVATOR_KI_ZONE = 5.0;
-    public static final double ELEVATOR_KG = 0.5;
-
-    public static final double ELEVATOR_MAX_VELOCITY = 65;
-    public static final double ELEVATOR_MAX_ACCELERATION = 200;
-    public static final int ELEVATOR_MAX_CURRENT = 38;
-    public static final double ELEVATOR_DEADBAND = 0.05;
-
-    public static final double ELEVATOR_UP_FORCE_REDUCTOR = 2.5;
-    public static final double ELEVATOR_DOWN_FORCE_REDUCTOR = 9;
     
        ///////////// Intake /////////////
     public static final int INTAKE_MOTOR_ID = 7;
@@ -156,7 +128,7 @@ public class Constants {
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
     public static final int INTAKE_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
-    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.75;    
+    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.71;    
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
     public static final double INTAKE_SHOOTER_SPEED = 0.33;
