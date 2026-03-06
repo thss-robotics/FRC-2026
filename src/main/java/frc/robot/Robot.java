@@ -5,6 +5,7 @@ import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Intake.IntakeState;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
@@ -17,6 +18,7 @@ import org.littletonrobotics.junction.LoggedRobot;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class Robot extends LoggedRobot {
   // Joystick input fields
@@ -35,12 +37,15 @@ public class Robot extends LoggedRobot {
   private Intake intakeSubsystem;
   private Shooter shooterSubsystem;
   private Arm armSubsystem;
+  private Limelight limeLight; 
 
    // Timer-based autonomous state
   private final Timer autoTimer = new Timer();
   /** Current phase: AutoConstants.AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR, AUTO_DONE */
   private int autoPhase = AutoConstants.AUTO_SHOOT;
   private double autoPhaseDuration = 0;
+
+ 
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -58,19 +63,22 @@ public class Robot extends LoggedRobot {
     AdvantageKit.recordMetadata();
 
     // Instantiate subsystems
-    driveSubsystem = Drive.getInstance();
+    // driveSubsystem = Drive.getInstance();
+    // limeLight = Limelight.getInstance();
     // elevatorSubsystem = Elevator.getInstance();
-    intakeSubsystem = Intake.getInstance();
-    shooterSubsystem = Shooter.getInstance();
-    armSubsystem = Arm.getInstance();
+    // intakeSubsystem = Intake.getInstance();
+    // shooterSubsystem = Shooter.getInstance();
+    // armSubsystem = Arm.getInstance();
+
   }
 
   @Override
   public void robotPeriodic() {
     // Run the command scheduler
-    // CommandScheduler.getInstance().run();
-    // intakeSubsystem.outputTelemetry(isDisabled());
-    // shooterSubsystem.outputTelemetry(isDisabled());
+    CommandScheduler.getInstance().run();
+    limeLight.outputTelemetry();
+    // // intakeSubsystem.outputTelemetry(isDisabled());
+    // shooterSubsystem.outputTelemetry();
     // armSubsystem.outputTelemetry(isDisabled());
   }
 
@@ -81,8 +89,8 @@ public class Robot extends LoggedRobot {
     if (!AutoConstants.AUTO_ENABLED) {
       return;
     }
-    autoPhase = AutoConstants.AUTO_SHOOT;
-    autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[AutoConstants.AUTO_SHOOT];
+    autoPhase = AutoConstants.AUTO_BACK;
+    autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[AutoConstants.AUTO_BACK];
     autoTimer.reset();
     autoTimer.start();
   }
@@ -100,29 +108,41 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
       autoTimer.reset();
       autoTimer.start();
       autoPhase++;
+      
       if (autoPhase > AutoConstants.AUTO_DONE) {
         autoPhase = AutoConstants.AUTO_DONE;
       }
-      if (autoPhase >= AutoConstants.AUTO_STRAFE) {
-        autoPhase = AutoConstants.AUTO_STRAFE;
-      }
-      if (autoPhase >= AutoConstants.AUTO_FORWARD) {
-        autoPhase = AutoConstants.AUTO_FORWARD;
+
+      if (autoPhase < AutoConstants.AUTO_DONE && autoPhase < AutoConstants.AUTO_PHASE_DURATION_SEC.length) {
+        autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[autoPhase];
       }
     }
 
     switch (autoPhase) {
+    case AutoConstants.AUTO_BACK:
+    driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0, 0.1, true);
+        break;
       case AutoConstants.AUTO_SHOOT:
-    shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
+        driveSubsystem.drive(0, 0, 0, true);
     shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
+    shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
         break;
       case AutoConstants.AUTO_STRAFE:
     shooterSubsystem.setShooterState(ShooterState.OFF);
     shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED, true);
         break;
       case AutoConstants.AUTO_FORWARD:
         driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
+        armSubsystem.moveArm(-0.6, 0.5);
+        break;
+        case AutoConstants.AUTO_TAKE_1:
+        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED/1.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+        armSubsystem.moveArm(-1, 0.5);
+        break;
+        case AutoConstants.AUTO_TAKE_2:
+        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED/1.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+        intakeSubsystem.setIntakeState(IntakeState.INTAKING);
         break;
       case AutoConstants.AUTO_DONE:
       default:
@@ -182,22 +202,33 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     }
 
     //Shooter Controls
-    boolean runShooterMax = controller2.getAButton();
-    boolean runShooterMid = controller2.getBButton();
-    boolean runShooterLow = controller2.getXButton();
 
-   if (controller2.getAButton()||controller2.getBButton() || controller2.getXButton()) {
+    boolean runShooter = controller2.getStartButton();
+    if (runShooter) {
+      shooterSubsystem.setShooterState(ShooterState.SHOOTING);
+    } else shooterSubsystem.setShooterState(ShooterState.OFF);
+
+    boolean runShooterMax = controller2.getAButton();
+    boolean runShooterHigh = controller2.getBButton();
+    boolean runShooterMid = controller2.getXButton();
+    boolean runShooterLow = controller2.getYButton();
+
+   if (controller2.getAButton()||controller2.getBButton() || 
+   controller2.getXButton() || controller2.getYButton() || controller2.getStartButton()) {
       shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
     } else shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
 
     ShooterState currentShooterState = shooterSubsystem.getShooterState();
     if (runShooterMax) {
       shooterSubsystem.setShooterState(ShooterState.MAX_SHOOTING);
-    } else if (runShooterMid)  {
+    } else if (runShooterHigh)  {
+      shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
+     }else if (runShooterMid)  {
       shooterSubsystem.setShooterState(ShooterState.MID_SHOOTING);
     } else if (runShooterLow)  {
       shooterSubsystem.setShooterState(ShooterState.LOW_SHOOTING);
     } else if (currentShooterState == ShooterState.MAX_SHOOTING || 
+    currentShooterState == ShooterState.HIGH_SHOOTING || 
     currentShooterState == ShooterState.MID_SHOOTING || 
     currentShooterState == ShooterState.LOW_SHOOTING)  {
     shooterSubsystem.setShooterState(ShooterState.OFF);

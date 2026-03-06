@@ -3,24 +3,34 @@ package frc.robot.subsystems;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig; 
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.Limelight;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
+    private Limelight limeLight; 
     private static Shooter instance = null;
 
     // Motors
- public final SparkMax UpperShooterMotor;
+ public final SparkMax ShooterMotor;
  public final SparkMax IntakeShooterMotor;
+    // Closed-loop controllers
+    private SparkClosedLoopController ShooterController;
+    private SparkClosedLoopController intakeShooterController;
 
     // States
     public enum ShooterState {
         OFF,
+        SHOOTING,
         MAX_SHOOTING,
+        HIGH_SHOOTING,
         MID_SHOOTING,
         LOW_SHOOTING,
     }
@@ -31,8 +41,9 @@ public class Shooter extends SubsystemBase {
 
     private ShooterState currentShooterState = ShooterState.OFF;
     private IntakeShooterState currentIntakeShooterState = IntakeShooterState.OFF;
-    
-    public Boolean ShooterRunning = true;
+
+    /** Last power computed when a target was visible; used when target is lost. */
+    private double lastShooterPower = 0.0;
 
     public static Shooter getInstance() {
         if (instance == null) {
@@ -42,22 +53,41 @@ public class Shooter extends SubsystemBase {
     }
 
     private Shooter() {
+            limeLight = Limelight.getInstance();
+            // Create two configs: one for the upper (main) shooter, one for the intake/feed shooter
+            SparkMaxConfig shooterConfig = new SparkMaxConfig();
 
-            SparkMaxConfig ShooterConfig = new SparkMaxConfig();
+            SparkMaxConfig feedConfig = new SparkMaxConfig();
+            feedConfig.closedLoop
+                .pid(Constants.SHOOTER_FEED_KP, Constants.SHOOTER_FEED_KI, Constants.SHOOTER_FEED_KD)
+                .iZone(Constants.SHOOTER_FEED_KI_ZONE);
 
         // Attach motors
-        UpperShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-        UpperShooterMotor.configure(
-        ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        IntakeShooterMotor = new SparkMax(Constants.LOWER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
-        UpperShooterMotor.configure(
-        ShooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        ShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        ShooterMotor.configure(
+        shooterConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+
+        IntakeShooterMotor = new SparkMax(Constants.INTAKE_SHOOTER_MOTOR_ID, MotorType.kBrushless);
+        IntakeShooterMotor.configure(
+        feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // Invert intake/feed shooter motor
+        IntakeShooterMotor.setInverted(true);
+        intakeShooterController = IntakeShooterMotor.getClosedLoopController();
     }
 
-    public void ShooterPeriodic(){
+    @Override
+    public void periodic() {
+        updateShooterMotor();
+        updateIntakeShooterMotor();
+    }
+
+    /** @deprecated Updates run automatically in {@link #periodic()}. Kept for compatibility. */
+    public void ShooterPeriodic() {
         updateShooterMotor();
     }
-        public void IntakeShooterPeriodic(){
+
+    /** @deprecated Updates run automatically in {@link #periodic()}. Kept for compatibility. */
+    public void IntakeShooterPeriodic() {
         updateIntakeShooterMotor();
     }
 
@@ -77,27 +107,51 @@ public class Shooter extends SubsystemBase {
         return currentIntakeShooterState;
     }
 
-    private void updateShooterMotor() {
+    public double getShooterPower() {
+        if (!limeLight.hasAllowedTarget()) {
+            return lastShooterPower;
+        }
+        double distanceMeters = limeLight.getXYDistance() - 0.025;
+
+        double power =
+            (0.00201463 * distanceMeters * distanceMeters) +
+            (0.0725777 * distanceMeters) +
+            0.382606;
+
+        // clamp to motor limits
+        if (power > 1.0) power = 1.0;
+        if (power < 0.0) power = 0.0;
+        lastShooterPower = power;
+        return power;
+    }
+
+     private void updateShooterMotor() {
         switch (currentShooterState) {
+            case SHOOTING:
+                ShooterMotor.set(-getShooterPower());
+                break;
             case MAX_SHOOTING:
-                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
+                ShooterMotor.set(Constants.UPPER_SHOOTER_MAX_SPEED);
+                break;
+            case HIGH_SHOOTING:
+                ShooterMotor.set(Constants.UPPER_SHOOTER_HIGH_SPEED);
                 break;
             case MID_SHOOTING:
-                UpperShooterMotor.set(Constants.UPPER_SHOOTER_MID_SPEED);
+                ShooterMotor.set(Constants.UPPER_SHOOTER_MID_SPEED);
                 break;
             case LOW_SHOOTING:
-                UpperShooterMotor.set(Constants.UPPER_SHOOTER_LOW_SPEED);
+                ShooterMotor.set(Constants.UPPER_SHOOTER_LOW_SPEED);
                 break;
             case OFF:
             default:
-                UpperShooterMotor.stopMotor();
+                ShooterMotor.stopMotor();
                 break;
         }
     }
          private void updateIntakeShooterMotor() {
         switch (currentIntakeShooterState) {
             case INTAKE_SHOOTING:
-                IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_SPEED);
+            IntakeShooterMotor.set(Constants.INTAKE_SHOOTER_SPEED);
                 break;
             case OFF:
             default:
@@ -107,8 +161,18 @@ public class Shooter extends SubsystemBase {
     }
 
     // LOGGING
-    public void outputTelemetry(boolean isRobotDisabled) {
-        SmartDashboard.putNumber("Shooter Speed", UpperShooterMotor.get() * 100);
-        SmartDashboard.putNumber("Shooter Current", UpperShooterMotor.getOutputCurrent());
+    public void outputTelemetry() {
+        
+        // Report encoder velocity (RPM) and current
+
+        SmartDashboard.putNumber("Shooter Current", ShooterMotor.getOutputCurrent());
+
+        try {
+            double upperRPM = IntakeShooterMotor.getEncoder().getVelocity();
+            SmartDashboard.putNumber("Feed RPM", upperRPM);
+        } catch (Exception e) {
+            SmartDashboard.putString("Feed RPM", "encoder-unavailable");
+        }
+        SmartDashboard.putNumber("Feed Current", IntakeShooterMotor.getOutputCurrent());
     }
 }
