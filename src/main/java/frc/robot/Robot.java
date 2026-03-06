@@ -180,11 +180,9 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     double strafe = Math.signum(controller1.getLeftX())
         * Math.pow(Math.abs(controller1.getLeftX()), 2) / speedMode;
 
-    //Use for blue alliance
-    double sign = Constants.allianceDriveSign();
-    xSpeed =   forward;
-    ySpeed =   strafe;
-    rotation =   getRotation();
+    xSpeed = forward;
+    ySpeed = strafe;
+    rotation =  getRotation();
 
  // Command the drive subsystem directly.
     if (!controller1.getYButton()) {
