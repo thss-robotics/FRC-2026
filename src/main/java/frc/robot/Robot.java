@@ -180,11 +180,6 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     double strafe = Math.signum(controller1.getLeftX())
         * Math.pow(Math.abs(controller1.getLeftX()), 2) / speedMode;
 
-    //Use for red alliance
-    // xSpeed = -forward;
-    // ySpeed = -strafe;
-    // rotation = -getRotation();
-
     //Use for blue alliance
     xSpeed = forward;
     ySpeed = strafe;
