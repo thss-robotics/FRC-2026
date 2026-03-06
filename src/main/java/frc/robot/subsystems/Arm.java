@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,6 +28,8 @@ public class Arm extends SubsystemBase {
     // Slew filter
     private final SlewRateLimiter armFilter = new SlewRateLimiter(1.8);
 
+    DigitalInput armLimitSwitch = new DigitalInput(7);
+
     private Arm() {
 
         SparkMaxConfig config = new SparkMaxConfig();
@@ -37,7 +40,6 @@ public class Arm extends SubsystemBase {
 
         armFollowerMotor = new SparkMax(Constants.ARM_FOLOWER_MOTOR_ID, MotorType.kBrushed);
         armFollowerMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-    // follower/arm inversion left default (adjust in hardware if needed)
 
         // DIO port (change if needed)
         armEncoder = new DutyCycleEncoder(Constants.ARM_ENCODER_PORT);
@@ -56,9 +58,13 @@ public class Arm extends SubsystemBase {
         velocity *= speedMultiplier;
         velocity = armFilter.calculate(velocity);
 
+        
+        if( (velocity < 0 && (!armLimitSwitch.get() ))){
+            velocity = 0;
+        }
         armMotor.set(velocity);
         armFollowerMotor.set(-velocity);
-    }
+}
 
     public void stop() {
     armMotor.stopMotor();
@@ -70,6 +76,7 @@ public class Arm extends SubsystemBase {
         SmartDashboard.putBoolean("Arm Encoder Connected", armEncoder.isConnected());
         SmartDashboard.putNumber("Arm Encoder Raw", armEncoder.get());
         SmartDashboard.putNumber("Arm Position Radians", (armEncoder.get() * (2.0 * Math.PI)));
+        SmartDashboard.putBoolean("Limit Switch Pressed", !armLimitSwitch.get());
     }
 }
 

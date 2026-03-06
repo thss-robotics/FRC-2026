@@ -63,12 +63,12 @@ public class Robot extends LoggedRobot {
     AdvantageKit.recordMetadata();
 
     // Instantiate subsystems
-    driveSubsystem = Drive.getInstance();
-    limeLight = Limelight.getInstance();
+    // driveSubsystem = Drive.getInstance();
+    // limeLight = Limelight.getInstance();
     // elevatorSubsystem = Elevator.getInstance();
-    intakeSubsystem = Intake.getInstance();
-    shooterSubsystem = Shooter.getInstance();
-    armSubsystem = Arm.getInstance();
+    // intakeSubsystem = Intake.getInstance();
+    // shooterSubsystem = Shooter.getInstance();
+    // armSubsystem = Arm.getInstance();
 
   }
 
@@ -77,8 +77,8 @@ public class Robot extends LoggedRobot {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
     limeLight.outputTelemetry();
-    // intakeSubsystem.outputTelemetry(isDisabled());
-    shooterSubsystem.outputTelemetry();
+    // // intakeSubsystem.outputTelemetry(isDisabled());
+    // shooterSubsystem.outputTelemetry();
     // armSubsystem.outputTelemetry(isDisabled());
   }
 

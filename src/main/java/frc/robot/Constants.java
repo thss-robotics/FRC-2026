@@ -100,7 +100,7 @@ public class Constants {
 
         /** Drive input for auto (fraction, same scale as teleop). */
         public static final double AUTO_DRIVE_SPEED = 1.0;
-        public static final double AUTO_TURN_SPEED = 0.1;
+        public static final double AUTO_TURN_SPEED = -0.1;
     }
 
         ///////////// Elevator (Values To Be Tested) /////////////
