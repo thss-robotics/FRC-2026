@@ -132,12 +132,12 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
         driveSubsystem.drive(sign * AutoConstants.AUTO_DRIVE_SPEED, 0, sign * AutoConstants.AUTO_TURN_SPEED, true);
         break;
         case AutoConstants.AUTO_TAKE_1:
-        driveSubsystem.drive(sign * -(AutoConstants.AUTO_DRIVE_SPEED/1.5), sign * -(AutoConstants.AUTO_DRIVE_SPEED/1.5), 0, true);
+        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED/1.5, sign * -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
         armSubsystem.moveArm(-1, 0.5);
         break;
         case AutoConstants.AUTO_TAKE_2:
         armSubsystem.stop();
-        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED, sign * -(AutoConstants.AUTO_DRIVE_SPEED/3), 0, true);
+        driveSubsystem.drive(sign * -AutoConstants.AUTO_DRIVE_SPEED/2.5, sign * -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
         intakeSubsystem.setIntakeState(IntakeState.INTAKING);
         break;
         case AutoConstants.AUTO_BACK_TO_ALLIANCE:
