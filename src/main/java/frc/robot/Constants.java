@@ -94,11 +94,11 @@ public class Constants {
         public static final double[] AUTO_PHASE_DURATION_SEC = {
             1.0,
             3.5,
-            1.5,
-            3.0,
+            1.55,
+            3.1,
             0.8,
             3.2,
-            1.82,
+            1.85,
             1.5,
             3.68,
         };

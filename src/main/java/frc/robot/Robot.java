@@ -116,7 +116,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
    if (AutoConstants.AUTO_DIRECTION_RIGHT) {
       switch (autoPhase) {
       case AutoConstants.AUTO_BACK:
-      driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0,  0.1, true);
+      driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0,  0, true);
           break;
         case AutoConstants.AUTO_SHOOT:
           driveSubsystem.drive(0, 0, 0, true);
@@ -132,7 +132,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
           driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, AutoConstants.AUTO_TURN_SPEED, true);
           break;
           case AutoConstants.AUTO_TAKE_1:
-          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/3.5, -AutoConstants.AUTO_DRIVE_SPEED/3.5, 0, true);
           armSubsystem.moveArm(-1, 0.5);
           break;
           case AutoConstants.AUTO_TAKE_2:
