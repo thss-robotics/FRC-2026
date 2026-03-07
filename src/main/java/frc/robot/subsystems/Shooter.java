@@ -4,8 +4,6 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig; 
 
@@ -21,9 +19,6 @@ public class Shooter extends SubsystemBase {
     // Motors
  public final SparkMax ShooterMotor;
  public final SparkMax IntakeShooterMotor;
-    // Closed-loop controllers
-    private SparkClosedLoopController ShooterController;
-    private SparkClosedLoopController intakeShooterController;
 
     // States
     public enum ShooterState {
@@ -59,9 +54,6 @@ public class Shooter extends SubsystemBase {
             SparkMaxConfig shooterConfig = new SparkMaxConfig();
 
             SparkMaxConfig feedConfig = new SparkMaxConfig();
-            feedConfig.closedLoop
-                .pid(Constants.SHOOTER_FEED_KP, Constants.SHOOTER_FEED_KI, Constants.SHOOTER_FEED_KD)
-                .iZone(Constants.SHOOTER_FEED_KI_ZONE);
 
         // Attach motors
         ShooterMotor = new SparkMax(Constants.UPPER_SHOOTER_MOTOR_ID, MotorType.kBrushless);
@@ -73,7 +65,6 @@ public class Shooter extends SubsystemBase {
         feedConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         // Invert intake/feed shooter motor
         IntakeShooterMotor.setInverted(true);
-        intakeShooterController = IntakeShooterMotor.getClosedLoopController();
     }
 
     @Override
@@ -115,9 +106,9 @@ public class Shooter extends SubsystemBase {
         double distanceMeters = limeLight.getXYDistance() - 0.025;
 
         double power =
-            (0.00201463 * distanceMeters * distanceMeters) +
+            (0.00201464 * distanceMeters * distanceMeters) +
             (0.0725777 * distanceMeters) +
-            0.382605;
+            0.382604;
 
         // clamp to motor limits
         if (power > 1.0) power = 1.0;

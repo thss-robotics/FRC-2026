@@ -98,14 +98,14 @@ public class Constants {
             3.0,
             0.8,
             3.2,
-            1.15,
+            1.82,
             1.5,
-            4.35,
+            3.68,
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
         public static final double AUTO_DRIVE_SPEED = 1.0;
-        public static final double AUTO_TURN_SPEED = -0.1;
+        public static final double AUTO_TURN_SPEED = -0.23;
     }
     
        ///////////// Intake /////////////
@@ -118,12 +118,11 @@ public class Constants {
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
     public static final int INTAKE_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
-    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.72;    
+    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.72;
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
-    public static final double INTAKE_SHOOTER_SPEED = 0.33;
-    public static final double INTAKE_SHOOTER_FAST_SPEED = 0.45;
-
+    public static final double INTAKE_SHOOTER_SPEED = 0.5;
+    public static final double INTAKE_SHOOTER_FAST_SPEED = 0.65;
     
     // Target RPMs for shooter wheel (positive values). These are sensor units of the
     // integrated encoder (Neo style) which is in RPM by default. Verify on the robot.

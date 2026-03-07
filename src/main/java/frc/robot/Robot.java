@@ -132,12 +132,12 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
           driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, AutoConstants.AUTO_TURN_SPEED, true);
           break;
           case AutoConstants.AUTO_TAKE_1:
-          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/1.5, -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
           armSubsystem.moveArm(-1, 0.5);
           break;
           case AutoConstants.AUTO_TAKE_2:
           armSubsystem.stop();
-          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/4, -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
           intakeSubsystem.setIntakeState(IntakeState.INTAKING);
           break;
           case AutoConstants.AUTO_BACK_TO_ALLIANCE:
@@ -147,7 +147,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
           break;
           case AutoConstants.AUTO_BACK_TO_TOWER:
           armSubsystem.stop();
-          driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, -AutoConstants.AUTO_TURN_SPEED*2, true);
+          driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, -AutoConstants.AUTO_TURN_SPEED*1.5, true);
           break;
           case AutoConstants.AUTO_SHOOT_2:
           driveSubsystem.drive(0, 0, 0, true);
@@ -180,12 +180,12 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
           driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, -AutoConstants.AUTO_TURN_SPEED, true);
           break;
           case AutoConstants.AUTO_TAKE_1:
-          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/1.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
+          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
           armSubsystem.moveArm(-1, 0.5);
           break;
           case AutoConstants.AUTO_TAKE_2:
           armSubsystem.stop();
-          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
+          driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/4, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
           intakeSubsystem.setIntakeState(IntakeState.INTAKING);
           break;
           case AutoConstants.AUTO_BACK_TO_ALLIANCE:
@@ -195,7 +195,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
           break;
           case AutoConstants.AUTO_BACK_TO_TOWER:
           armSubsystem.stop();
-          driveSubsystem.drive(0, -AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*2, true);
+          driveSubsystem.drive(0, -AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*1.5, true);
           break;
           case AutoConstants.AUTO_SHOOT_2:
           driveSubsystem.drive(0, 0, 0, true);
@@ -211,57 +211,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
       }
     }
   } 
-  
 
-     //Auto routine to go from left trench to right trench
-  //   switch (autoPhase) {
-  //   case AutoConstants.AUTO_BACK:
-  //   driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0,  0.1, true);
-  //       break;
-  //     case AutoConstants.AUTO_SHOOT:
-  //       driveSubsystem.drive(0, 0, 0, true);
-  //   shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
-  //   shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
-  //       break;
-  //     case AutoConstants.AUTO_STRAFE:
-  //   shooterSubsystem.setShooterState(ShooterState.OFF);
-  //   shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-  //       driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, 0, true);
-  //       break;
-  //     case AutoConstants.AUTO_FORWARD:
-  //       driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, AutoConstants.AUTO_TURN_SPEED, true);
-  //       break;
-  //       case AutoConstants.AUTO_TAKE_1:
-  //       driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/1.5, -AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
-  //       armSubsystem.moveArm(-1, 0.5);
-  //       break;
-  //       case AutoConstants.AUTO_TAKE_2:
-  //       armSubsystem.stop();
-  //       driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED/2.5, -AutoConstants.AUTO_DRIVE_SPEED, 0, true);
-  //       intakeSubsystem.setIntakeState(IntakeState.INTAKING);
-  //       break;
-  //       case AutoConstants.AUTO_BACK_TO_ALLIANCE:
-  //       driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
-  //       intakeSubsystem.setIntakeState(IntakeState.OFF);
-  //       armSubsystem.moveArm(0.4, 0.5);
-  //       break;
-  //       case AutoConstants.AUTO_BACK_TO_TOWER:
-  //       armSubsystem.stop();
-  //       driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*9, true);
-  //       break;
-  //       case AutoConstants.AUTO_SHOOT_2:
-  //       driveSubsystem.drive(0, 0, 0, true);
-  //       shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
-  //       shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
-  //       break;
-  //     case AutoConstants.AUTO_DONE:
-  //     default:
-  //       driveSubsystem.drive(0, 0, 0, true);
-  //       shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-  //       shooterSubsystem.setShooterState(ShooterState.OFF);
-  //       break;
-  //   }
-  // }
   /** Clean up autonomous so teleop starts from a known state (e.g. if auto is disabled early). 
   https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/IterativeRobotBase.html 
   */
@@ -296,7 +246,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     //Arm Controls (Only Manual control without preset locations currently)
     double armVelocity;
 
-    armVelocity = -controller2.getLeftY();
+    armVelocity = controller2.getLeftY();
     armSubsystem.moveArm(armVelocity, 0.5);
 
     //Intake Controls
