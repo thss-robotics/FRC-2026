@@ -76,6 +76,7 @@ public class Constants {
 
         /** Set to true to run the timer-based autonomous routine; false to do nothing during auto. */
         public static final boolean AUTO_ENABLED = true;
+        public static final boolean AUTO_DIRECTION_RIGHT = true;
 
         // Timer-based autonomous phase indices
         public static final int AUTO_BACK = 0;
@@ -89,7 +90,7 @@ public class Constants {
         public static final int AUTO_SHOOT_2 = 8;
         public static final int AUTO_DONE = 9;
 
-        /** Duration in seconds per phase. Index by AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR. */
+        //Duration in seconds per phase.
         public static final double[] AUTO_PHASE_DURATION_SEC = {
             1.0,
             3.5,
