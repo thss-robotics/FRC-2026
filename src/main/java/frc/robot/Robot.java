@@ -146,7 +146,7 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
         break;
         case AutoConstants.AUTO_BACK_TO_TOWER:
         armSubsystem.stop();
-        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*4, true);
+        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED*9, true);
         break;
         case AutoConstants.AUTO_SHOOT_2:
         driveSubsystem.drive(0, 0, 0, true);

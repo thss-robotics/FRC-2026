@@ -103,7 +103,7 @@ public class Constants {
         };
 
         /** Drive input for auto (fraction, same scale as teleop). */
-        public static final double AUTO_DRIVE_SPEED = 0.05;
+        public static final double AUTO_DRIVE_SPEED = 1.0;
         public static final double AUTO_TURN_SPEED = -0.1;
     }
     
@@ -117,7 +117,7 @@ public class Constants {
     public static final int UPPER_SHOOTER_MOTOR_ID = 8;
     public static final int INTAKE_SHOOTER_MOTOR_ID = 9;
     public static final double UPPER_SHOOTER_MAX_SPEED = -1;
-    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.71;    
+    public static final double UPPER_SHOOTER_HIGH_SPEED = -0.72;    
     public static final double UPPER_SHOOTER_MID_SPEED = -0.67;
     public static final double UPPER_SHOOTER_LOW_SPEED = -0.62;
     public static final double INTAKE_SHOOTER_SPEED = 0.33;
