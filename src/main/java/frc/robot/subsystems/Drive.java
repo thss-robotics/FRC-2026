@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.swerve.utility.WheelForceCalculator.Feedforwards;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.controllers.PPLTVController;
+import com.pathplanner.lib.config.*;
 import com.studica.frc.AHRS;
 import com.studica.frc.AHRS.NavXComType;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
@@ -13,8 +17,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.Discretization;
+import edu.wpi.first.units.measure.Velocity;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+
 
 /**
  * The Drive subsystem handles swerve drive control, odometry, and gyro feedback. It instantiates
@@ -83,8 +90,28 @@ public class Drive extends SubsystemBase {
         odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(gyro.getAngle()),
                 new SwerveModulePosition[] {frontLeftModule.getPosition(),
                         frontRightModule.getPosition(), backLeftModule.getPosition(),
-                        backRightModule.getPosition()});
+                        backRightModule.getPosition()});}
+
+    public ChassisSpeeds getCurrentSpeeds() { //method to return speeds of each module
+        return kinematics.toChassisSpeeds(
+            frontLeftModule.getState(),
+            frontRightModule.getState(),
+            backLeftModule.getState(),
+            frontLeftModule.getState()
+        );
     }
+
+    public void driveRobotRelative(ChassisSpeeds speeds) {
+        SwerveModuleState[] states = kinematics.toSwerveModuleStates(ChassisSpeeds.discretize(speeds, 0.02));
+
+        frontLeftModule.setDesiredState(states[0]);
+        frontRightModule.setDesiredState(states[1]);
+        backLeftModule.setDesiredState(states[2]);
+        backRightModule.setDesiredState(states[3]);
+
+    }
+
+
 
     /**
      * Returns the singleton instance of the Drive subsystem.

@@ -11,16 +11,37 @@ import frc.robot.subsystems.Shooter.IntakeShooterState;
 import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.subsystems.Arm;
 import frc.robot.Constants.AutoConstants;
-
+import java.nio.file.Path;
 import java.util.List;
-
+import java.util.jar.Attributes.Name;
 import org.littletonrobotics.junction.LoggedRobot;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
+
+import edu.wpi.first.util.sendable.Sendable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
+//import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+
 public class Robot extends LoggedRobot {
+  private Command autoCommand; //new command "autoCommand"
+  
+  //robotContainer
+  private RobotContainer robotContainer; //creating new instance of robotcontainer
+  private static final String alliesFirstAuto = "alliesFirstAuto";
+  private String autoSelected;
+  private final SendableChooser<String> autoChooser = new SendableChooser<>(); //create new SendableChooser "autoChooser"
+
   // Joystick input fields
   private double xSpeed = 0;
   private double ySpeed = 0;
@@ -44,8 +65,6 @@ public class Robot extends LoggedRobot {
   /** Current phase: AutoConstants.AUTO_SHOOT, AUTO_STRAFE, AUTO_FORWARD, AUTO_ELEVATOR, AUTO_DONE */
   private int autoPhase = AutoConstants.AUTO_SHOOT;
   private double autoPhaseDuration = 0;
-
- 
   
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -59,16 +78,15 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-    AdvantageKit.startLog();
+    if (Robot.isReal()) {
+        AdvantageKit.startLog();
+    } else {
+        ;
+    }
     AdvantageKit.recordMetadata();
 
-    // Instantiate subsystems
-    // driveSubsystem = Drive.getInstance();
-    // limeLight = Limelight.getInstance();
-    // elevatorSubsystem = Elevator.getInstance();
-    // intakeSubsystem = Intake.getInstance();
-    // shooterSubsystem = Shooter.getInstance();
-    // armSubsystem = Arm.getInstance();
+    autoChooser.addOption(alliesFirstAuto, alliesFirstAuto); //add the option "alliesFirstAuto"
+    SmartDashboard.putData("auto selection", autoChooser); //put data (autoChooser) on smartdashboard titled "auto selection"
 
   }
 
@@ -76,7 +94,7 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
-    limeLight.outputTelemetry();
+   // limeLight.outputTelemetry();
     // // intakeSubsystem.outputTelemetry(isDisabled());
     // shooterSubsystem.outputTelemetry();
     // armSubsystem.outputTelemetry(isDisabled());
@@ -84,76 +102,23 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousInit() {
-    // Generate and schedule the autonomous command.
+    autoSelected = autoChooser.getSelected(); //string = selected auto
+    System.out.println("Selection made: " + autoSelected);
 
-    if (!AutoConstants.AUTO_ENABLED) {
-      return;
-    }
-    autoPhase = AutoConstants.AUTO_BACK;
-    autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[AutoConstants.AUTO_BACK];
-    autoTimer.reset();
-    autoTimer.start();
   }
 
-/* Based on example from:
-https://frc6399.github.io/intro2frc/wpilib/1.html
-https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Timer.html
-*/
   @Override
   public void autonomousPeriodic() {
-    if (!AutoConstants.AUTO_ENABLED) {
-      return;
-    }
-    if (autoTimer.hasElapsed(autoPhaseDuration)) {
-      autoTimer.reset();
-      autoTimer.start();
-      autoPhase++;
-      
-      if (autoPhase > AutoConstants.AUTO_DONE) {
-        autoPhase = AutoConstants.AUTO_DONE;
-      }
-
-      if (autoPhase < AutoConstants.AUTO_DONE && autoPhase < AutoConstants.AUTO_PHASE_DURATION_SEC.length) {
-        autoPhaseDuration = AutoConstants.AUTO_PHASE_DURATION_SEC[autoPhase];
-      }
-    }
-
-    switch (autoPhase) {
-    case AutoConstants.AUTO_BACK:
-    driveSubsystem.drive(-AutoConstants.AUTO_DRIVE_SPEED, 0, 0.1, true);
-        break;
-      case AutoConstants.AUTO_SHOOT:
-        driveSubsystem.drive(0, 0, 0, true);
-    shooterSubsystem.setIntakeShooterState(IntakeShooterState.INTAKE_SHOOTING);
-    shooterSubsystem.setShooterState(ShooterState.HIGH_SHOOTING);
-        break;
-      case AutoConstants.AUTO_STRAFE:
-    shooterSubsystem.setShooterState(ShooterState.OFF);
-    shooterSubsystem.setIntakeShooterState(IntakeShooterState.OFF);
-        driveSubsystem.drive(0, AutoConstants.AUTO_DRIVE_SPEED, AutoConstants.AUTO_TURN_SPEED, true);
-        break;
-      case AutoConstants.AUTO_FORWARD:
-        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED, 0, 0, true);
-        armSubsystem.moveArm(-0.6, 0.5);
-        break;
-        case AutoConstants.AUTO_TAKE_1:
-        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED/1.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
-        armSubsystem.moveArm(-1, 0.5);
-        break;
-        case AutoConstants.AUTO_TAKE_2:
-        driveSubsystem.drive(AutoConstants.AUTO_DRIVE_SPEED/1.5, AutoConstants.AUTO_DRIVE_SPEED/1.5, 0, true);
-        intakeSubsystem.setIntakeState(IntakeState.INTAKING);
-        break;
-      case AutoConstants.AUTO_DONE:
-      default:
-        driveSubsystem.drive(0, 0, 0, true);
-        break;
-    }
+  //switch auto based on selection via switch-case 
+  switch(autoSelected) {
+    case alliesFirstAuto:
+    ;
+    break;
+    default:
+    ;
+    break;
   }
-
-  /** Clean up autonomous so teleop starts from a known state (e.g. if auto is disabled early). 
-  https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/IterativeRobotBase.html 
-  */
+  }
 
   @Override
   public void teleopInit() {
@@ -164,7 +129,6 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
 
   @Override
   public void teleopPeriodic() {
-
     // Field relative (with robot front facing towards the opposing alliance)
     double forward = -Math.signum(controller1.getLeftY())
         * Math.pow(Math.abs(controller1.getLeftY()), 2) / speedMode;
@@ -257,4 +221,5 @@ https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/Time
     }
     return Math.pow((1.8*rightX), 3);
   }
+
 }

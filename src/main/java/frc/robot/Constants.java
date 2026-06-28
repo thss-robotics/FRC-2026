@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 
+
 public class Constants {
     ///////////// Swerve Module Configuration /////////////
     // The MAXSwerve module can be configured with one of three pinion gears: 12T, 13T, or 14T.
