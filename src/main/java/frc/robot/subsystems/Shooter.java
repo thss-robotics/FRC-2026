@@ -60,20 +60,23 @@ public class Shooter extends Subsystem{
 
 
     @Override
-    public void stop() { //STOP!!!!!!!!!!!
-        setShooterState(ShooterState.OFF, shootSpeed);
+    public void stop() {
+        setShooterState(ShooterState.OFF, 0);
     }
 
     @Override
     public boolean checkSystem() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'checkSystem'");
+        return  lowerShooterMotor.isAlive() &&
+                upperShooterMotor.isAlive();
     }
 
     @Override
     public void outputTelemetry(boolean isRobotDisabled) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'outputTelemetry'");
+        SmartDashboard.putString("Shooter State", currentState.toString());
+        SmartDashboard.putNumber("Shooter Speed", shootSpeed * 100);
+        
+        SmartDashboard.putNumber("Lower Shooter Speed", lowerShooterMotor.get() * 100);
+        SmartDashboard.putNumber("Upper Shooter Speed", upperShooterMotor.get() * 100);
     }
     
 }
