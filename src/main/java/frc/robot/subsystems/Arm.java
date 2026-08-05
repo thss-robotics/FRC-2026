@@ -2,21 +2,23 @@ package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.lib.Subsystem;
 
 public class Arm extends Subsystem{
 
     private static Arm instance = null;
-    private DutyCycleEncoder armEncoder;
 
     public enum armState {moving, braking, disabled}
     private armState currentState = armState.disabled;
 
     private final SparkMax leftMotor = new SparkMax(31, MotorType.kBrushless);
     private final SparkMax rightMotor = new SparkMax(32, MotorType.kBrushless);
+    
     public SparkMaxConfig armConfig = new SparkMaxConfig();
+    public RelativeEncoder leftArmEncoder = leftMotor.getEncoder();
+    public RelativeEncoder rightArmEncoder = rightMotor.getEncoder();
 
 
     public static Arm getInstance() {
@@ -26,19 +28,34 @@ public class Arm extends Subsystem{
             return instance;
     }
 
-    private Arm() { //configs
-        
+    private Arm() { //config
+        //put something here i dunno
     }
 
-    public void move(double velocity, boolean safetyOn) { //move the arm up and down. will eventually want to get our position
-                                                          //to prevent user from moving arm further if maxed out 
-        
+    public double getRightEncoderPos() {
+        double rightEncoderPosition = rightArmEncoder.getPosition();
+        return rightEncoderPosition;
+    }
+
+    public double getLeftEncoderPos() {
+        double lefEncoderPosition = leftArmEncoder.getPosition();
+        return lefEncoderPosition;
+    }
+
+    public void raiseArm() {
+        leftMotor.set(0.5); //what unit is this...
+        rightMotor.set(0.5);
+    }
+
+    public void lowerArm() {
+        leftMotor.set(-0.5);
+        rightMotor.set(-0.5);
     }
 
     @Override
-    public void stop() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stop'");
+    public void stop() { //STOP?!?!??!??!?!??!?!??!?!?!??!?!?!??!?!?!?!
+        leftMotor.stopMotor();
+        rightMotor.stopMotor();
     }
 
     @Override
