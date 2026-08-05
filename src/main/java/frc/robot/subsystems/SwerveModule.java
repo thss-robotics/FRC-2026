@@ -18,7 +18,7 @@ import com.revrobotics.RelativeEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
- * Simplified SwerveModule for controlling drive and turning without precision mode. Telemetry now
+ * Simplified SwerveModule for controlling and turning without precision mode. Telemetry now
  * outputs the unique module ID.
  */
 public class SwerveModule {
