@@ -4,13 +4,23 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.Subsystem;
+import frc.robot.LimelightHelpers;
 
 public class Shooter extends Subsystem{
 
     private static Shooter instance = null;
-
     private Spark lowerShooterMotor = new Spark(0);
     private Spark upperShooterMotor = new Spark(1);
+
+    boolean hasValidTarget = LimelightHelpers.getTV(""); //obviously... checking for valid target
+    
+    double tx = LimelightHelpers.getTX(""); //horizontal offset from crosshair to target (deg)
+    double ty = LimelightHelpers.getTY("");
+    double ta = LimelightHelpers.getTA(""); //target area; 0-100% of image
+    double txnc = LimelightHelpers.getTXNC(""); //horizontal offset from principal pixel point to target (deg)
+    double tync = LimelightHelpers.getTYNC("");
+
+
 
     public enum ShooterState {
         OFF,
@@ -43,11 +53,20 @@ public class Shooter extends Subsystem{
         return currentState;
     }
 
+    private boolean returnValidTarget() {
+        return hasValidTarget;    
+    }
+
+    private void distanceToGoal() {
+        //find
+    }
+
     private void updateMotors(double speed) {
         if (currentState == ShooterState.SHOOTING) {
             lowerShooterMotor.set(speed);
             upperShooterMotor.set(speed);
         } if (currentState == ShooterState.AUTO_SHOOTING) {
+            //adjust according to limelight
             lowerShooterMotor.set(speed);
             upperShooterMotor.set(speed);
         } else {
@@ -55,9 +74,6 @@ public class Shooter extends Subsystem{
             upperShooterMotor.set(0);
         }
     }
-
-
-
 
     @Override
     public void stop() {
