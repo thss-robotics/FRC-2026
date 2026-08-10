@@ -57,8 +57,25 @@ public class Shooter extends Subsystem{
         return hasValidTarget;    
     }
 
-    private void distanceToGoal() {
-        //find
+    private double distanceToGoal() { //X-axis only
+        double distanceToTargetX = 0;
+        int aprilTagHeight = 60;
+        double limeLightHeight = 28; //placeholder, estimate of position
+        double limeLightAngle = 0; //placeholder, estimate of angle
+        if (returnValidTarget() == true) {
+        distanceToTargetX = (aprilTagHeight - limeLightHeight) / Math.tan((limeLightAngle + ty)) * (3.1459/180);
+        }
+        return distanceToTargetX;
+    }
+
+    private double motorPowerPercentCalculator() {
+        double MotorPercent = distanceToGoal() / 158; //give a percent needs to still be processed into a number between 0.6 and 1
+        return MotorPercent;
+    }
+
+    private double motorPowerDeterminer() {
+        double motorPercent = (1 - 0.6) * motorPowerPercentCalculator() + 0.6; //processes percent into 0.6 to 1
+        return motorPercent;
     }
 
     private void updateMotors(double speed) {
@@ -67,8 +84,8 @@ public class Shooter extends Subsystem{
             upperShooterMotor.set(speed);
         } if (currentState == ShooterState.AUTO_SHOOTING) {
             //adjust according to limelight
-            lowerShooterMotor.set(speed);
-            upperShooterMotor.set(speed);
+            lowerShooterMotor.set(motorPowerDeterminer());
+            upperShooterMotor.set(motorPowerDeterminer());
         } else {
             lowerShooterMotor.set(0);
             upperShooterMotor.set(0);
