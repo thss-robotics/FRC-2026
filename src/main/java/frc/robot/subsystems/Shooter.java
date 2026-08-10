@@ -63,7 +63,7 @@ public class Shooter extends Subsystem{
         double limeLightHeight = 28; //placeholder, estimate of position
         double limeLightAngle = 0; //placeholder, estimate of angle
         if (returnValidTarget() == true) {
-        distanceToTargetX = (aprilTagHeight - limeLightHeight) / Math.tan((limeLightAngle + ty)) * (3.1459/180);
+        distanceToTargetX = (aprilTagHeight - limeLightHeight) / Math.tan((limeLightAngle + ty)) * (3.14159/180);
         }
         return distanceToTargetX;
     }
