@@ -1,7 +1,9 @@
 package frc.robot;
 
 import frc.lib.util.AdvantageKit;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Shooter;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -32,6 +34,10 @@ public class Robot extends LoggedRobot {
   // Controller and subsystems
   private final XboxController controller = new XboxController(Constants.kXboxControllerPort);
   private Drive driveSubsystem;
+  private Intake intakeSubsystem;
+  private Arm armSubsystem;
+  private Shooter shooterSubsystem;
+  private LimelightHelpers limeLight;
 
   // Singleton instance of Robot
   private static Robot instance = null;
@@ -50,6 +56,10 @@ public class Robot extends LoggedRobot {
 
     // Instantiate subsystems
     driveSubsystem = Drive.getInstance();
+    armSubsystem = Arm.getInstance();
+    shooterSubsystem = Shooter.getInstance();
+    
+    
   }
 
   @Override
@@ -69,7 +79,9 @@ public class Robot extends LoggedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    //shooterSubsystem.findDistToGoal();
+  }
 
   @Override
   public void teleopInit() {}
