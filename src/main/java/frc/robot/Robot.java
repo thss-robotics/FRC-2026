@@ -3,7 +3,9 @@ package frc.robot;
 import frc.lib.util.AdvantageKit;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Shooter.ShooterState;
 import frc.robot.Constants.AutoConstants;
 
 import java.util.List;
@@ -33,6 +35,7 @@ public class Robot extends LoggedRobot {
 
   // Controller and subsystems
   private final XboxController controller = new XboxController(Constants.kXboxControllerPort);
+
   private Drive driveSubsystem;
   private Intake intakeSubsystem;
   private Arm armSubsystem;
@@ -66,11 +69,16 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     // Run the command scheduler
     CommandScheduler.getInstance().run();
+    //output telemetry!!
+    //TODO: just...... double-check........
+    armSubsystem.outputTelemetry(isDisabled());
+    shooterSubsystem.outputTelemetry(isDisabled());
+    intakeSubsystem.outputTelemetry(isDisabled());
   }
 
   @Override
   public void autonomousInit() {
-    // Generate and schedule the autonomous command.
+    
 
     Command autoCommand = getAutonomousCommand();
     if (autoCommand != null) {
@@ -80,11 +88,15 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    //shooterSubsystem.findDistToGoal();
   }
 
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    shooterSubsystem.setShooterState(ShooterState.OFF, speedMode);
+    driveSubsystem.drive(0, 0, 0, true);
+    armSubsystem.stop();
+    intakeSubsystem.stop();
+  }
 
   @Override
   public void teleopPeriodic() {
@@ -105,6 +117,27 @@ public class Robot extends LoggedRobot {
     } else {
       driveSubsystem.drive(0, 0, 0, true);
     }
+
+    // shooter control
+    if (controller.getYButton()) {
+      shooterSubsystem.setShooterState(ShooterState.SHOOTING, 3.0); //placeholder speed
+    } else {
+      shooterSubsystem.setShooterState(ShooterState.OFF, 0.0);
+    }
+
+    // arm control
+    double leftY = controller.getLeftY();
+
+    if (leftY > 0.0) {
+      armSubsystem.raiseArm();
+    } else if (leftY < 0.0) {
+      armSubsystem.lowerArm();
+    } else {
+      armSubsystem.stop();
+    }
+
+    // intake control
+    
   }
 
   /**
