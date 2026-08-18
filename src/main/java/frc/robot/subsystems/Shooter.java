@@ -67,7 +67,7 @@ private double distanceToGoal() { //X-axis only
         double limeLightHeight = 28; //placeholder, estimate of position
         double limeLightAngle = 0; //placeholder, estimate of angle
         if (returnValidTarget() == true) {
-        distanceToTargetX = (aprilTagHeight - limeLightHeight) / Math.tan((limeLightAngle + ty)) * (3.1459/180);
+        distanceToTargetX = (aprilTagHeight - limeLightHeight) / Math.tan((limeLightAngle + ty)) * (3.14159/180);
         }
         return distanceToTargetX;
     }
@@ -92,6 +92,7 @@ private double distanceToGoal() { //X-axis only
             lowerShooterMotor.set(0);
             upperShooterMotor.set(0);
         }
+    }
 
     @Override
     public void stop() {
